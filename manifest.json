@@ -1,0 +1,16 @@
+{
+  "name": "Phasmophobia Tracker",
+  "short_name": "Phasmophobia",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#6366f1",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./phasmoapplogo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:;">
+
+    <title>Phasmophobia Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="phasmoapplogo.png">
+    <link rel="apple-touch-icon" href="phasmoapplogo.png">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Phasmophobia Tracker">
+    <meta property="og:description" content="Studia i fantasmi e le loro abilità uniche! / Study ghosts and their unique abilities!">
+    <meta property="og:image" content="https://itzdaen.github.io/phasmophobia-tracker/phasmoapplogo.png">
+    <meta property="og:url" content="https://itzdaen.github.io/phasmophobia-tracker/">
+    <meta property="og:type" content="website">
+
+    <meta name="theme-color" content="#0f111a">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Rajdhani:wght@500;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            var currentTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js').then(reg => {
+                        console.log('SW registered');
+                    }).catch(err => console.error('SW error', err));
+                });
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div id="matrix-bg"></div>
+    <div class="app-container">
+        
+        <!-- sidebar / header -->
+        <aside class="app-sidebar">
+            <header class="top-nav">
+                <h1 id="ui-title">Phasmophobia<br>Tracker</h1>
+                <div class="nav-actions">
+                    <button class="icon-btn" id="theme-toggle" title="Toggle Dark/Light Mode">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <button class="icon-btn lang-btn" id="lang-toggle" title="Switch Language">
+                        <i class="fa-solid fa-globe"></i><span id="lang-text">EN</span>
+                    </button>
+                    <button class="icon-btn" id="reset-btn" title="Reset"><i class="fa-solid fa-rotate-right"></i></button>
+                </div>
+            </header>
+
+            <div class="sidebar-content">
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="ghost-search" placeholder="Cerca fantasma..." autocomplete="off">
+                </div>
+
+                <section class="evidence-bar">
+                    <h3 class="desktop-only-title" id="lbl-ev-title">Evidences</h3>
+                    <div class="evidence-scroll" id="evidence-grid">
+                        <!-- evidences -->
+                    </div>
+                </section>
+            </div>
+            
+            <footer class="sidebar-footer">
+                <p class="footer-credit">By ItzDaen</p>
+                
+            </footer>
+        </aside>
+
+        <!-- ghost grid -->
+        <main class="ghost-list-container">
+            <div class="ghost-list" id="ghost-list">
+                <!-- populated via js -->
+            </div>
+        </main>
+        
+    </div>
+
+    <!-- modal -->
+    <div class="modal" id="ghost-modal">
+        <button class="modal-nav-btn prev-btn" id="modal-prev"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="modal-nav-btn next-btn" id="modal-next"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="modal-content">
+            <div class="modal-drag-handle mobile-only"></div>
+            <button class="modal-close-btn desktop-only" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="modal-header-new" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <div class="m-title-area" style="text-align: center;">
+                    <h2 id="m-name" class="m-ghost-name"></h2>
+                    <div class="m-tags" id="m-ev-tags" style="justify-content: center;"></div>
+                </div>
+            </div>
+            
+            <div class="m-tabs">
+                <button class="m-tab-btn active" data-tab="tab-overview"><i class="fa-solid fa-book-journal-whills"></i> <span id="lbl-tab-overview">Panoramica</span></button>
+                <button class="m-tab-btn" data-tab="tab-stats"><i class="fa-solid fa-chart-simple"></i> <span id="lbl-tab-stats">Statistiche</span></button>
+                <button class="m-tab-btn" data-tab="tab-combat"><i class="fa-solid fa-shield-halved"></i> <span id="lbl-tab-combat">Sopravvivenza</span></button>
+            </div>
+            
+            <div class="m-tab-content">
+                <!-- overview tab -->
+                <div class="m-tab-pane active" id="tab-overview">
+                    <div class="m-card">
+                        <h3><i class="fa-solid fa-bolt" style="color: var(--accent);"></i> <span id="lbl-ability">Abilità Unica</span></h3>
+                        <p id="m-ability"></p>
+                    </div>
+                    <div class="m-card" style="margin-top: 16px;">
+                        <h3><i class="fa-solid fa-eye" style="color: var(--gold);"></i> <span id="lbl-tells">Comportamenti Evidenti</span></h3>
+                        <ul id="m-tells" class="tells-list"></ul>
+                    </div>
+                </div>
+                
+                <!-- stats tab -->
+                <div class="m-tab-pane" id="tab-stats">
+                    <div class="m-stats-container">
+                        <div class="m-card speed-zone" id="m-speed-section">
+                            <div class="m-stat-header">
+                                <h3><i class="fa-solid fa-gauge-high"></i> <span id="lbl-speed">Velocità</span></h3>
+                                <span id="m-speed" class="speed-badge"></span>
+                            </div>
+                            <p id="m-speed-notes" class="m-notes" style="display: none;"></p>
+                        </div>
+                        
+                        <div class="m-card danger-zone" id="m-thresh-section">
+                            <div class="m-stat-header">
+                                <h3><i class="fa-solid fa-skull"></i> <span id="lbl-thresh">Soglia Caccia</span></h3>
+                                <span id="m-thresh" class="thresh-badge"></span>
+                            </div>
+                            <p id="m-thresh-notes" class="m-notes"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- combat tab -->
+                <div class="m-tab-pane" id="tab-combat">
+                    <div class="m-card safe-zone">
+                        <h3><i class="fa-solid fa-shield-heart" style="color: var(--success);"></i> <span id="lbl-counters">Difesa</span></h3>
+                        <p id="m-counters"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="js/data_en.js"></script>
+    <script src="js/data_it.js"></script>
+    <script src="js/bundle.js"></script>
+</body>
+</html>
