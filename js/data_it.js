@@ -1,41 +1,3 @@
-const EVIDENCES_IT = [
-  {
-    "id": "emf5",
-    "name": "EMF Liv. 5",
-    "icon": "fa-solid fa-wave-square"
-  },
-  {
-    "id": "spirit_box",
-    "name": "Spirit Box",
-    "icon": "fa-solid fa-radio"
-  },
-  {
-    "id": "uv",
-    "name": "Ultravioletto",
-    "icon": "fa-solid fa-hand"
-  },
-  {
-    "id": "orb",
-    "name": "Sfera di Luce",
-    "icon": "fa-solid fa-video"
-  },
-  {
-    "id": "writing",
-    "name": "Libro spiritico",
-    "icon": "fa-solid fa-pen-fancy"
-  },
-  {
-    "id": "freezing",
-    "name": "Temp. Congel.",
-    "icon": "fa-solid fa-snowflake"
-  },
-  {
-    "id": "dots",
-    "name": "Proiettore D.O.T.S.",
-    "icon": "fa-solid fa-tower-broadcast"
-  }
-];
-
 const GHOSTS_IT = [
   {
     "name": "Aswang",
@@ -44,7 +6,7 @@ const GHOSTS_IT = [
       "writing",
       "dots"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "Termina istantaneamente la caccia se raggiunge un giocatore dentro un nascondiglio ufficiale disponibile, quindi non può mai uccidere un giocatore nascosto. Se una caccia finisce così, alla caccia successiva imposta un waypoint direttamente sulla posizione di quel giocatore, anche durante il periodo di grazia.",
     "tells": [
       "Terminerà immediatamente la caccia se entra in un nascondiglio ufficiale occupato da un giocatore rilevato.",
       "Se la caccia termina in questo modo, nella caccia successiva si dirigerà subito verso la posizione in cui si trovava il giocatore, fin dal periodo di grazia.",
@@ -86,7 +48,7 @@ const GHOSTS_IT = [
       "orb",
       "spirit_box"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "Entro 10 m dal fantasma, velocità e soglia di caccia seguono il giocatore più vicino: 1,2 m/s al 45% se quel giocatore è fermo, 2,25 m/s al 65% se sta camminando. Oltre quel raggio caccia normalmente, e la velocità LOS accumulata in sottofondo viene applicata non appena esce. Può apparire solo come fantasma femminile, con nome e vocalizzo femminili.",
     "tells": [
       "Può essere solo femmina, il modello fantasma e il nome del fantasma rifletteranno questo.",
       "La velocità della caccia è determinata dal movimento del giocatore vicino al fantasma."
@@ -99,7 +61,28 @@ const GHOSTS_IT = [
     "counters": "Durante una caccia, quando il giocatore si trova entro 10 m dal fantasma, se il fantasma accelera quando il giocatore si muove e rallenta quando il giocatore si ferma, è un Dayan. Durante una caccia, se il fantasma rallenta improvvisamente quando si avvicina (anche senza <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>), potrebbe essere un Dayan."
   },
   {
-    "name": "Demone",
+    "name": "Deildegast",
+    "evidences": [
+      "emf5",
+      "writing",
+      "dots"
+    ],
+    "ability": "La velocità di caccia parte da 3,0 m/s e scende di 0,1 m/s per ogni oggetto unico non equipaggiabile che un giocatore raccoglie o usa, fino a un minimo di 0,4 m/s. Contano: gli oggetti raccolti, gli oggetti non equipaggiabili usati, gli interruttori, il quadro elettrico, i rubinetti. <b>Non</b> contano: le possessioni maledette, le porte, l'equipaggiamento, e tutto ciò che il fantasma butta il fantasma stesso. Ogni oggetto conta una volta sola e la velocità torna a 3,0 m/s dopo ogni caccia o dopo un crocifisso bruciato.",
+    "tells": [
+      "Velocità fissa, senza alcuna accelerazione per LOS: non accelera mai quando ti guarda.",
+      "L'unico fantasma a cui i giocatori morti continuano ad aiutare: anche le loro interazioni lo rallentano.",
+      "Interagisce con porte e interruttori molto meno spesso degli altri (10% invece del 25%), e solo l'85% delle sue interazioni con gli oggetti riesce.",
+      "L'impostazione di difficoltà 'Porte aperte all'inizio' viene abbassata di un livello per questo fantasma."
+    ],
+    "speed_badge": "0.4 - 3.0",
+    "speed_modal": "0,4 - 3,0 m/s - 3,0 m/s all'inizio, 0,1 m/s in meno per ogni oggetto unico toccato. 1,7 m/s (velocità standard) dopo 13 oggetti, 0,4 m/s minimi dopo 26.",
+    "thresh_badge": "50%",
+    "thresh_modal": "50% - Caccia al normale 50% di sanità media.",
+    "thresh_notes": "Caccia al normale 50% di sanità media.",
+    "counters": "Tocca più oggetti unici che puoi fra una caccia e l'altra: dopo 9 oggetti è già a 2,1 m/s, più lento della tua andatura media, e dopo 13 è alla normale velocità di 1,7 m/s. Punta a 15 oggetti circa, poi ricomincia dopo la caccia successiva perché la velocità si azzera. Anche i crocifissi bruciati azzerano il contatore, quindi attenzione agli altri Smudge. Puoi testare il Deildegast e il Poltergeist insieme, perché entrambi richiedono di spostare oggetti. Se il fantasma accelera per LOS, non è un Deildegast."
+  },
+  {
+    "name": "Demon",
     "evidences": [
       "uv",
       "writing",
@@ -115,7 +98,10 @@ const GHOSTS_IT = [
     "thresh_badge": "70% - 100%",
     "thresh_modal": "70% - 100% - Abilità di cacciare a qualsiasi livello di sanità mentale, caccia normalmente al 70%.",
     "thresh_notes": "Abilità di cacciare a qualsiasi livello di sanità mentale, caccia normalmente al 70%.",
-    "counters": "Avvia un timer dopo che il fantasma è stato incensato. Se torna a cacciare prima di 90 secondi, è un demone. Avvia un timer al termine di una caccia o dopo che è stato utilizzato un crocifisso. Se la caccia riprende prima che siano trascorsi 25 secondi, si tratta di un demone Se il fantasma caccia con un livello di sanità mentale superiore all'80%, nessun giocatore ha un livello di sanità mentale inferiore al 50% e nessuna candela è stata accesa, si tratta di un demone (se ci si trova a Sunny Meadows, è possibile che un Onryo cacci prima del tempo, poiché le candele della cappella sono già accese)"
+    "counters": "Avvia un timer dopo che il fantasma è stato incensato. Se torna a cacciare prima di 90 secondi, è un demone. Avvia un timer al termine di una caccia o dopo che è stato utilizzato un crocifisso. Se la caccia riprende prima che siano trascorsi 25 secondi, si tratta di un demone Se il fantasma caccia con un livello di sanità mentale superiore all'80%, nessun giocatore ha un livello di sanità mentale inferiore al 50% e nessuna candela è stata accesa, si tratta di un demone (se ci si trova a Sunny Meadows, è possibile che un Onryo cacci prima del tempo, poiché le candele della cappella sono già accese)",
+    "alias": [
+      "Demone"
+    ]
   },
   {
     "name": "Deogen",
@@ -144,11 +130,12 @@ const GHOSTS_IT = [
       "uv",
       "spirit_box"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "Cicla fra tre stati che cambiano velocità, soglia di sanità, raggio del crocifisso, accecamento da incenso e sale, nell'ordine Normale > Infuriato > Indebolito. Crocifisso e incenso cambiano stato all'istante, il sale dopo 2-3 secondi. Se una caccia finisce mentre è infuriato, passa direttamente a indebolito. I cambi di stato non si accodano: due sacchi di sale ravvicinati contano una volta sola.",
     "tells": [
-      "Passa attraverso 3 stati che modificano la velocità e altri comportamenti [Normale > Infuriato > Indebolito >...]",
+      "Passa attraverso 3 stati che modificano la velocità e altri comportamenti [Normale > Infuriato > Indebolito >...].",
+      "Può cacciare direttamente sopra un crocifisso Tier 1 posato a terra quando è in stato Infuriato.",
       "La soglia media di sanità mentale della caccia è del 50% nello stato Normale, del 60% nello stato Infuriato e del 40% nello stato Indebolito.",
-      "La velocità del fantasma è di 1,7 m/s nello stato Normale, 1,96 m/s nello stato Infuriato e 1,36 m/s nello stato Indebolito"
+      "La velocità del fantasma è di 1,7 m/s nello stato Normale, 1,96 m/s nello stato Infuriato e 1,36 m/s nello stato Indebolito."
     ],
     "speed_badge": "1.36 - 1.96",
     "speed_modal": "1.36 - 1.96 (Alt: 1.7) m/s - 1,7 m/s in stato Normale, 1,96 m/s in stato Infuriato, 1,36 m/s in stato Indebolito.",
@@ -182,7 +169,7 @@ const GHOSTS_IT = [
       "orb",
       "freezing"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "La velocità durante la caccia segue la temperatura della stanza in cui si trova, da 1,4 m/s in stanze calde fino a 2,7 m/s sotto zero, e non accelera mai per LOS. Ogni 3 secondi durante la caccia emette un alito gelido vicino alla testa per tutto il tempo in cui il quadro elettrico è spento. Non può mai accendere il quadro elettrico e ha il doppio delle probabilità di spegnerlo.",
     "tells": [
       "Durante la caccia, quando il contatore è spento/rotto, il respiro gelido sarà visibile.",
       "Non può accendere il contatore.",
@@ -279,7 +266,7 @@ const GHOSTS_IT = [
       "uv",
       "writing"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "Durante la caccia i suoi passi e le sue vocalizzazioni si sentono solo entro 12 m invece dei soliti 20 m, leggermente ovattati al limite. Fuori dalle cacce è invece <i>più</i> loquace: produce suoni paranormali ogni 64-127 secondi con microfono parabolico o registratore audio, contro ogni 80-127 secondi per gli altri fantasmi.",
     "tells": [
       "Durante la caccia, i passi e le voci non possono essere uditi a più di 12 metri di distanza (normale è 20 metri).",
       "Emette suoni attraverso il microfono parabolico / registratore audio più frequentemente rispetto agli altri fantasmi."
@@ -319,7 +306,7 @@ const GHOSTS_IT = [
       "uv",
       "dots"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "Alterna fra uno stato calmo e uno aggressivo. Parte sempre calmo, poi cambia 1 minuto dopo la prima porta d'uscita aperta e ogni 2 minuti dopo, anche a metà caccia. Calmo: 1,445 m/s, caccia al 10% di sanità, si muove moltissimo. Aggressivo: 1,955 m/s, caccia al 65% di sanità, si muove pochissimo. Una caccia iniziata in stato aggressivo è anche il 20% più corta, anche se cambia stato a metà.",
     "tells": [
       "Passerà da uno stato \"calmo\" a uno stato \"aggressivo\" ogni 2 minuti (il timer inizia a metà dello stato \"calmo\" all'apertura della porta d'ingresso).",
       "65% quando aggressivo, 10% quando calmo.",
@@ -420,7 +407,7 @@ const GHOSTS_IT = [
       "orb",
       "dots"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "Assorbe l'energia dagli elettronici attivi sullo stesso piano, che possono essere posati o tenuti in mano da chiunque. Entro il suo raggio (6 m mappe piccole, 8 m medie, 10 m grandi) caccia al 65% di sanità e si muove a 2,5 m/s fissi; fuori caccia normalmente. Interferisce inoltre con gli elettronici fino a 15 m, il doppio dei soliti 10 m, chat globale compresa.",
     "tells": [
       "Durante gli eventi e le cacce, provoca disturbi elettronici a una distanza di 15 m invece che 10 m.",
       "Aumento della velocità durante la caccia in prossimità di dispositivi elettronici attivi.",
@@ -441,7 +428,7 @@ const GHOSTS_IT = [
       "writing",
       "freezing"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "Vaga a 1,0 m/s, poi nel momento in cui rileva un giocatore con vista, voce o elettronici salta a 3,0 m/s e mantiene quella velocità fino a raggiungere l'ultima posizione conosciuta, dopodiché rallenta gradualmente in circa 2,7 secondi. Non ha alcuna accelerazione per LOS.",
     "tells": [
       "Durante una caccia, un Revenant sarà lento (1,0 m/s) finché non rileva un giocatore. Se rilevato, accelererà immediatamente a 3,0 m/s e manterrà quella velocità fino a raggiungere l’ultima posizione nota del giocatore, dove rallenterà gradualmente."
     ],
@@ -453,7 +440,7 @@ const GHOSTS_IT = [
     "counters": "Durante una caccia, ascolta la velocità del fantasma. Se è lento, ma accelera rapidamente quando gli permetti di rilevarti, e poi rallenta di nuovo, è un Revenant. (Sarà più veloce di Jinn e Raiju, vedi le schede dei fantasmi per le velocità di esempio). Durante una caccia, ascolta la velocità del fantasma. Se non è 1,0 m/s o 3,0 m/s, <i>non</i> è un Revenant."
   },
   {
-    "name": "Ombra",
+    "name": "Shade",
     "evidences": [
       "emf5",
       "writing",
@@ -462,6 +449,7 @@ const GHOSTS_IT = [
     "ability": "Preferisce l'evento \"Fantasma Ombra\" durante gli eventi. Non caccerà se si trova nella stessa stanza di un giocatore. Non farà eventi nella stessa stanza di un giocatore. Non farà interazioni che generano EMF 2, EMF 3 o EMF 5 mentre si trova nella stessa stanza del giocatore. La possibilità di fare eventi diminuisce al di sopra del 50% di sanità media. Non spegnerà le luci durante la caccia se si trova nella stessa stanza del giocatore.",
     "tells": [
       "L'unico fantasma che può apparire come fantasma ombra durante eventi con il cerchio di evocazione, carillon e la zampa di scimmia.",
+      "Ha una probabilità maggiore di fare eventi \"Forma di nebbia\".",
       "Non può eseguire eventi fantasma di canto.",
       "Non può eseguire l'interazione oggetto 'solleva e lancia al giocatore'."
     ],
@@ -470,16 +458,19 @@ const GHOSTS_IT = [
     "thresh_badge": "35%",
     "thresh_modal": "35% - Non caccia fino al raggiungimento del 35% di sanità mentale media.",
     "thresh_notes": "Non caccia fino al raggiungimento del 35% di sanità mentale media.",
-    "counters": "Se hai il cerchio di evocazione, accendilo, e se il fantasma è un ombra, è un'Ombra. Una volta individuata la stanza infestata, posiziona un crocifisso che copra l'intera stanza e installa dei sensori a tutte le entrate. Se il fantasma non fa nulla mentre si trova nella stanza con te, potrebbe trattarsi di un'Ombra. Posiziona più fuochi accesi in una stanza e assicurati che il fantasma vi entri durante la caccia: se non spegne nessun fuoco, potrebbe trattarsi di un'Ombra. Se il fantasma esegue un evento di canto fantasma, non è un'Ombra. Se il fantasma compie un evento che provochi EMF 2, 3 o 5 nella stessa stanza di un giocatore, non si tratta di un'Ombra. Se tenta di cacciare nella stessa stanza di un giocatore, non è un'Ombra. Se tenta di cacciare con una sanità superiore al 35%, non è un'Ombra."
+    "counters": "Se hai il cerchio di evocazione, accendilo, e se il fantasma è un ombra, è un'Ombra. Una volta individuata la stanza infestata, posiziona un crocifisso che copra l'intera stanza e installa dei sensori a tutte le entrate. Se il fantasma non fa nulla mentre si trova nella stanza con te, potrebbe trattarsi di un'Ombra. Posiziona più fuochi accesi in una stanza e assicurati che il fantasma vi entri durante la caccia: se non spegne nessun fuoco, potrebbe trattarsi di un'Ombra. Se il fantasma esegue un evento di canto fantasma, non è un'Ombra. Se il fantasma compie un evento che provochi EMF 2, 3 o 5 nella stessa stanza di un giocatore, non si tratta di un'Ombra. Se tenta di cacciare nella stessa stanza di un giocatore, non è un'Ombra. Se tenta di cacciare con una sanità superiore al 35%, non è un'Ombra.",
+    "alias": [
+      "Ombra"
+    ]
   },
   {
-    "name": "Spirito",
+    "name": "Spirit",
     "evidences": [
       "emf5",
       "spirit_box",
       "writing"
     ],
-    "ability": "Nessuna abilità specificata.",
+    "ability": "L'incenso vicino a lui blocca la caccia successiva per 180 secondi invece dei soliti 90, e lo stesso ritardo vale quando viene incensato durante una caccia. Non ha altri comportamenti particolari, il che lo rende il riferimento base con cui confrontare tutti gli altri fantasmi.",
     "tells": [
       "Dopo essere stato incensato, attenderà 180 secondi prima di tentare nuovamente la caccia, invece dei 90 secondi standard."
     ],
@@ -488,7 +479,10 @@ const GHOSTS_IT = [
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "Dopo aver inizialmente incensato il fantasma, attendere 150-170 secondi e incensarlo nuovamente (avviando un nuovo timer di smudge). Se il fantasma attacca entro 60 secondi dal secondo incensamento (il tempo minimo in cui un demone può attaccare), si tratta di uno spirito. Nota: questo test può fallire se il fantasma non viene effettivamente incensato una seconda volta. Avvia un timer non appena il fantasma è stato incensato. Se il fantasma caccia prima di 180 secondi, <i>non</i> è uno Spirito."
+    "counters": "Dopo aver inizialmente incensato il fantasma, attendere 150-170 secondi e incensarlo nuovamente (avviando un nuovo timer di smudge). Se il fantasma attacca entro 60 secondi dal secondo incensamento (il tempo minimo in cui un demone può attaccare), si tratta di uno spirito. Nota: questo test può fallire se il fantasma non viene effettivamente incensato una seconda volta. Avvia un timer non appena il fantasma è stato incensato. Se il fantasma caccia prima di 180 secondi, <i>non</i> è uno Spirito.",
+    "alias": [
+      "Spirito"
+    ]
   },
   {
     "name": "Thaye",
@@ -510,7 +504,7 @@ const GHOSTS_IT = [
     "counters": "Se hai una tavola Ouija, chiedi l'età del fantasma. Dopo un po' di tempo, ripeti la domanda. Se il numero fornito aumenta o se risponde con 90 o più, si tratta di un Thaye. Se la velocità diminuisce ad ogni caccia e il fantasma non ha <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>, si tratta di un Thaye. Durante una caccia, se il fantasma non accelera nella <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>, potrebbe trattarsi di un Thaye. Durante una caccia, se il fantasma accelera con <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>, non si tratta di un Thaye."
   },
   {
-    "name": "Il Mimo",
+    "name": "The Mimic",
     "evidences": [
       "spirit_box",
       "uv",
@@ -525,10 +519,14 @@ const GHOSTS_IT = [
     "thresh_badge": "10% - 100%",
     "thresh_modal": "10% - 100% - Copia il comportamento del fantasma attualmente imitato.",
     "thresh_notes": "Copia il comportamento del fantasma attualmente imitato.",
-    "counters": "In assenza di prove, controlla la stanza preferita dal fantasma alla ricerca di sfere fantasma. Se ci sono sfere fantasma, si tratta del Mimo. Presta attenzione al comportamento dei fantasmi durante ogni caccia. Se il comportamento cambia drasticamente tra una caccia e l'altra (sembra che ogni volta si tratti di un fantasma diverso), si tratta del Mimo. Controlla la stanza preferita dal fantasma alla ricerca di sfere fantasma. Se <i>non</i> ci sono sfere fantasma, <i>non</i> si tratta del Mimo."
+    "counters": "In assenza di prove, controlla la stanza preferita dal fantasma alla ricerca di sfere fantasma. Se ci sono sfere fantasma, si tratta del Mimo. Presta attenzione al comportamento dei fantasmi durante ogni caccia. Se il comportamento cambia drasticamente tra una caccia e l'altra (sembra che ogni volta si tratti di un fantasma diverso), si tratta del Mimo. Controlla la stanza preferita dal fantasma alla ricerca di sfere fantasma. Se <i>non</i> ci sono sfere fantasma, <i>non</i> si tratta del Mimo.",
+    "alias": [
+      "Il Mimo",
+      "Mimo"
+    ]
   },
   {
-    "name": "I gemelli",
+    "name": "The Twins",
     "evidences": [
       "emf5",
       "spirit_box",
@@ -544,7 +542,12 @@ const GHOSTS_IT = [
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "Se il fantasma alterna una velocità compresa tra 1,5 m/s e 1,9 m/s tra una caccia e l'altra, si tratta dei Gemelli. Se ci sono interazioni frequenti lontane dalla stanza fantasma, potrebbero essere i Gemelli."
+    "counters": "Se il fantasma alterna una velocità compresa tra 1,5 m/s e 1,9 m/s tra una caccia e l'altra, si tratta dei Gemelli. Se ci sono interazioni frequenti lontane dalla stanza fantasma, potrebbero essere i Gemelli.",
+    "alias": [
+      "I gemelli",
+      "Gemelli",
+      "Gemello"
+    ]
   },
   {
     "name": "Wraith",

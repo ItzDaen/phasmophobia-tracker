@@ -1,41 +1,3 @@
-const EVIDENCES_EN = [
-  {
-    "id": "emf5",
-    "name": "EMF 5",
-    "icon": "fa-solid fa-wave-square"
-  },
-  {
-    "id": "spirit_box",
-    "name": "Spirit Box",
-    "icon": "fa-solid fa-radio"
-  },
-  {
-    "id": "uv",
-    "name": "Ultraviolet",
-    "icon": "fa-solid fa-hand"
-  },
-  {
-    "id": "orb",
-    "name": "Ghost Orb",
-    "icon": "fa-solid fa-video"
-  },
-  {
-    "id": "writing",
-    "name": "Ghost Writing",
-    "icon": "fa-solid fa-pen-fancy"
-  },
-  {
-    "id": "freezing",
-    "name": "Freezing Temp",
-    "icon": "fa-solid fa-snowflake"
-  },
-  {
-    "id": "dots",
-    "name": "D.O.T.S.",
-    "icon": "fa-solid fa-tower-broadcast"
-  }
-];
-
 const GHOSTS_EN = [
   {
     "name": "Aswang",
@@ -44,7 +6,7 @@ const GHOSTS_EN = [
       "writing",
       "dots"
     ],
-    "ability": "No abilities specified.",
+    "ability": "Ends the hunt instantly if it reaches a player inside an available official hiding spot, so it can never kill a hidden player. If a hunt ends that way, the next hunt starts with a waypoint placed directly on that player's location, even during the grace period.",
     "tells": [
       "Will immediately end a hunt if the ghost enters an official hiding spot that a detected player is currently in.",
       "If a hunt ends when the ghost enters the same official hiding spot as a player, the ghost will walk toward that player's current location at the start of the following hunt, even during the grace period.",
@@ -86,7 +48,7 @@ const GHOSTS_EN = [
       "orb",
       "spirit_box"
     ],
-    "ability": "No abilities specified.",
+    "ability": "Within 10m of the ghost, hunt speed and sanity threshold follow the closest player: 1.2 m/s at 45% if that player is standing still, 2.25 m/s at 65% if they are walking. Outside that radius it hunts normally, and accrued LOS speed is applied as soon as it leaves. Can only ever appear as a female ghost, with a female name and vocalisation.",
     "tells": [
       "Can only be female, ghost model and ghost name will reflect this.",
       "Hunt speed and sanity are determined by player movement near the ghost."
@@ -97,6 +59,27 @@ const GHOSTS_EN = [
     "thresh_modal": "45% - 65% - 65% when near the ghost and walking, 45% when near the ghost and standing still, 50% when away from the ghost.",
     "thresh_notes": "65% when near the ghost and walking, 45% when near the ghost and standing still, 50% when away from the ghost.",
     "counters": "During a hunt, when the player is within 10m of the ghost, if the ghost speeds up when the player moves and slows down when the player stops, it is a Dayan. During a hunt, if the ghost suddenly slows down when it gets near (even without <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>), it could be a Dayan."
+  },
+  {
+    "name": "Deildegast",
+    "evidences": [
+      "emf5",
+      "writing",
+      "dots"
+    ],
+    "ability": "Hunt speed starts at 3.0 m/s and drops by 0.1 m/s for every unique non-equipment item a player picks up or interacts with, down to a minimum of 0.4 m/s. Counts: props picked up, non-equipment items used, light switches, the fuse box, taps. Does <b>not</b> count: cursed possessions, doors, equipment, or anything the ghost itself throws. Each item only counts once, and the speed resets to 3.0 m/s after every hunt or burnt crucifix.",
+    "tells": [
+      "Fixed speed with no line-of-sight acceleration whatsoever, so it never speeds up when it looks at you.",
+      "The only ghost dead players still help: their interactions count towards slowing it down too.",
+      "Interacts with doors and light switches far less often than other ghosts (10% instead of 25%), and only 85% of its prop interactions succeed.",
+      "The 'Doors starting open' difficulty setting is lowered by one step for this ghost."
+    ],
+    "speed_badge": "0.4 - 3.0",
+    "speed_modal": "0.4 - 3.0 m/s - 3.0m/s at the start, 0.1m/s less for each unique item touched. 1.7m/s (standard speed) after 13 items, 0.4m/s minimum after 26.",
+    "thresh_badge": "50%",
+    "thresh_modal": "50% - Hunts at the standard 50% average sanity.",
+    "thresh_notes": "Hunts at the standard 50% average sanity.",
+    "counters": "Touch as many unique items as you can between hunts: after 9 items it is already down to 2.1 m/s, slower than your average walk, and after 13 it is at the standard 1.7 m/s. Aim for roughly 15 items, then do it all again after the next hunt because the speed resets. Burnt crucifixes reset the counter too, so watch your other Smudges. You can test for a Deildegast and a Poltergeist at the same time, since both need items to be moved. If the ghost ever accelerates with line of sight, it is not a Deildegast."
   },
   {
     "name": "Demon",
@@ -115,7 +98,10 @@ const GHOSTS_EN = [
     "thresh_badge": "70% - 100%",
     "thresh_modal": "70% - 100% - Ability to hunt at any sanity, hunts normally at 70%.",
     "thresh_notes": "Ability to hunt at any sanity, hunts normally at 70%.",
-    "counters": "Start a timer after the ghost has been smudged. If it hunts again before 90s, it is a Demon. Start a timer after a hunt ends or after a crucifix has been used. If it hunts again before 25s, it is a Demon. If a ghost hunts above 80% sanity, no one player's sanity is below 50%, and no candles have been lit, it is a Demon (If on Sunny Meadows, it is possible for an Onryo to hunt early since the Chapel candles are already lit)"
+    "counters": "Start a timer after the ghost has been smudged. If it hunts again before 90s, it is a Demon. Start a timer after a hunt ends or after a crucifix has been used. If it hunts again before 25s, it is a Demon. If a ghost hunts above 80% sanity, no one player's sanity is below 50%, and no candles have been lit, it is a Demon (If on Sunny Meadows, it is possible for an Onryo to hunt early since the Chapel candles are already lit)",
+    "alias": [
+      "Demone"
+    ]
   },
   {
     "name": "Deogen",
@@ -144,12 +130,12 @@ const GHOSTS_EN = [
       "uv",
       "spirit_box"
     ],
-    "ability": "No abilities specified.",
+    "ability": "Cycles through three states that change speed, sanity threshold, crucifix range, incense blind and salt, in the order Normal > Enraged > Weakened. Crucifix and incense flip the state instantly, salt takes 2-3s. If a hunt ends while enraged it drops straight to weakened. State changes cannot be queued, so two salts in quick succession only count once.",
     "tells": [
-      "Cycles through 3 states that change speed and other behaviors [Normal > Enraged > Weakened >...]",
+      "Cycles through 3 states that change speed and other behaviors [Normal > Enraged > Weakened >...].",
       "Can hunt directly on top of a Tier 1 crucifix placed on the floor when enraged.",
       "Average hunt sanity threshold is 50% in Normal State, 60% in Enraged State, and 40% in Weakened State.",
-      "Ghost speed is 1.7m/s in Normal State, 1.96m/s in Enraged State, and 1.36m/s in Weakened State"
+      "Ghost speed is 1.7m/s in Normal State, 1.96m/s in Enraged State, and 1.36m/s in Weakened State."
     ],
     "speed_badge": "1.36 - 1.96",
     "speed_modal": "1.36 - 1.96 (Alt: 1.7) m/s - 1.7m/s in Normal State, 1.96m/s in Enraged State, 1.36m/s in Weakened State.",
@@ -183,7 +169,7 @@ const GHOSTS_EN = [
       "orb",
       "freezing"
     ],
-    "ability": "No abilities specified.",
+    "ability": "Hunt speed follows the temperature of the room it is in, from 1.4 m/s in warm rooms up to 2.7 m/s below freezing, and it never accelerates with line of sight. Every 3 seconds during a hunt it emits freezing breath near its head for as long as the fuse box is off. It can never turn the fuse box on and is twice as likely to turn it off.",
     "tells": [
       "Will have visible freezing breath during hunts when the breaker is off/broken.",
       "Cannot turn on the breaker.",
@@ -280,7 +266,7 @@ const GHOSTS_EN = [
       "uv",
       "writing"
     ],
-    "ability": "No abilities specified.",
+    "ability": "During a hunt its footsteps and vocalisations are only audible within 12m instead of the usual 20m, slightly muffled at the limit. Outside hunts it is <i>more</i> talkative: it makes paranormal sounds every 64-127 seconds on a parabolic mic or sound recorder, against 80-127 seconds for other ghosts.",
     "tells": [
       "Footsteps and vocals cannot be heard more than 12m away during hunts (normal is 20m).",
       "Makes sounds through the parabolic microphone/sound recorder more frequently than other ghosts."
@@ -320,7 +306,7 @@ const GHOSTS_EN = [
       "uv",
       "dots"
     ],
-    "ability": "No abilities specified.",
+    "ability": "Switches between a calm and an aggressive state. It always starts calm, then flips 1 minute after the first exit door is opened and every 2 minutes after that, even mid-hunt. Calm: 1.445 m/s, hunts at 10% sanity, very active. Aggressive: 1.955 m/s, hunts at 65% sanity, barely moves. A hunt that starts aggressive is also 20% shorter, even if it switches state partway through.",
     "tells": [
       "Will switch between a 'calm' state and 'aggressive' state every 2 minutes (timer starts halfway through 'calm' state upon opening front door).",
       "65% when aggressive, 10% when calm.",
@@ -421,7 +407,7 @@ const GHOSTS_EN = [
       "orb",
       "dots"
     ],
-    "ability": "No abilities specified.",
+    "ability": "Siphons power from active electronics on the same floor, and can be placed or held by anyone. Within its radius (6m small, 8m medium, 10m large maps) it hunts at 65% sanity and moves at a fixed 2.5 m/s; outside it hunts normally. It also interferes with electronics from up to 15m, twice the usual 10m, global chat included.",
     "tells": [
       "During events and hunts, causes electronic disturbance at a 15m range instead of 10m.",
       "Increased speed while hunting when near active electronics.",
@@ -442,7 +428,7 @@ const GHOSTS_EN = [
       "writing",
       "freezing"
     ],
-    "ability": "No abilities specified.",
+    "ability": "Roams at 1.0 m/s, then the instant it detects a player by sight, voice or electronics it jumps to 3.0 m/s and holds that speed until it reaches the last known position, after which it eases back down over about 2.7 seconds. It has no line-of-sight acceleration at all.",
     "tells": [
       "During a hunt, a Revenant will be slow (1.0m/s) until it detects a player (voice, active electronic equipment, or <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>) where it will immediately speed up to 3.0m/s and remain at that speed until it reaches the players last known location where it will gradually slow back down."
     ],
@@ -460,7 +446,7 @@ const GHOSTS_EN = [
       "writing",
       "freezing"
     ],
-    "ability": "Prefers shadow ghost model during events. Will not hunt if in the same room as a player. Will not do events in the same room as a player (but can start an event outside of the room and teleport to the player). Will not do interactions that result in EMF 2, EMF 3, or EMF 5 while in the same room as the player, including ghost writing, blowing out flames, and voodoo doll interactions (can step just outside of the room and interact with things in the room). Will not do interactions that result in EMF 2 or EMF 3 while in the same room as the player, including blowing out flames and voodoo doll interactions (can step just outside of the room and interact with things in the room). Chance for doing ghost events decreases the higher average sanity is above 50% (cannot do ghost events at 100% sanity). Will not blow out firelights while hunting if in the same room as the player (beware of actual or buggy room boundaries).",
+    "ability": "Prefers shadow ghost model during events. Will not hunt if in the same room as a player. Will not do events in the same room as a player (but can start an event outside of the room and teleport to the player). Will not do interactions that result in EMF 2, EMF 3, or EMF 5 while in the same room as the player, including ghost writing, blowing out flames, and voodoo doll interactions (it can step just outside of the room and interact with things inside it). Chance of ghost events decreases the higher average sanity is above 50% (no events at 100% sanity). Will not blow out firelights while hunting if in the same room as the player (beware of actual or buggy room boundaries).",
     "tells": [
       "Only ghost that can appear as a shadow ghost model on summoning circle, music box, and monkey paw events.",
       "More likely to do \"Ghost Mist\" events.",
@@ -472,7 +458,10 @@ const GHOSTS_EN = [
     "thresh_badge": "35%",
     "thresh_modal": "35% - Does not hunt until 35% average sanity.",
     "thresh_notes": "Does not hunt until 35% average sanity.",
-    "counters": "If you have the summoning circle, light it, and if the ghost model is a shadow, it is a Shade. Once the ghost room is found, place a crucifix covering the entire room and motion sensors at all entrances. If the ghost does nothing while in the room with you, it could be a Shade. Place multiple lit fires in a room and ensure the ghost walks through them during a hunt: if it doesn't extinguish any fires, it could be a Shade. If the ghost does a singing ghost event, it is not a Shade. If the ghost does an event that causes EMF 2, 3, or 5 in the same room as a player, it is not a Shade. If it attempts to hunt in the same room as a player, it is not a Shade. If it attempts to hunt above 35% sanity, it is not a Shade."
+    "counters": "If you have the summoning circle, light it, and if the ghost model is a shadow, it is a Shade. Once the ghost room is found, place a crucifix covering the entire room and motion sensors at all entrances. If the ghost does nothing while in the room with you, it could be a Shade. Place multiple lit fires in a room and ensure the ghost walks through them during a hunt: if it doesn't extinguish any fires, it could be a Shade. If the ghost does a singing ghost event, it is not a Shade. If the ghost does an event that causes EMF 2, 3, or 5 in the same room as a player, it is not a Shade. If it attempts to hunt in the same room as a player, it is not a Shade. If it attempts to hunt above 35% sanity, it is not a Shade.",
+    "alias": [
+      "Ombra"
+    ]
   },
   {
     "name": "Spirit",
@@ -481,7 +470,7 @@ const GHOSTS_EN = [
       "spirit_box",
       "writing"
     ],
-    "ability": "No abilities specified.",
+    "ability": "Incense near it blocks the next hunt for 180 seconds instead of the usual 90, and the same delay applies when it is smudged during a hunt. It has no other special behaviour, which makes it the baseline to measure every other ghost against.",
     "tells": [
       "Will wait 180s after being incensed before attempting to hunt again, instead of the standard 90s."
     ],
@@ -490,7 +479,10 @@ const GHOSTS_EN = [
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "After smudging the ghost initially, wait 150s - 170s and smudge the ghost again (starting a new smudge timer). If the ghost hunts within 60s of the second smudge (earliest a Demon could hunt), it is a Spirit. Note: this test can fail if the ghost is not actually smudged the second time. Start a timer as soon as the ghost has been smudged. If the ghost hunts before 180s, it is <i>not</i> a Spirit."
+    "counters": "After smudging the ghost initially, wait 150s - 170s and smudge the ghost again (starting a new smudge timer). If the ghost hunts within 60s of the second smudge (earliest a Demon could hunt), it is a Spirit. Note: this test can fail if the ghost is not actually smudged the second time. Start a timer as soon as the ghost has been smudged. If the ghost hunts before 180s, it is <i>not</i> a Spirit.",
+    "alias": [
+      "Spirito"
+    ]
   },
   {
     "name": "Thaye",
@@ -499,7 +491,7 @@ const GHOSTS_EN = [
       "writing",
       "dots"
     ],
-    "ability": "Ghost will attempt to age every 1-2 minutes. If a player is in the same room when it attempts, it ages; otherwise, it waits 30s and attempts again More active when younger.",
+    "ability": "Ghost will attempt to age every 1-2 minutes. If a player is in the same room when it attempts, it ages; otherwise, it waits 30s and attempts again. More active when younger.",
     "tells": [
       "Age response on Ouija board increases as Thaye ages.",
       "Only ghost that can have an age of 90+ on the Ouija Board."
@@ -527,7 +519,11 @@ const GHOSTS_EN = [
     "thresh_badge": "10% - 100%",
     "thresh_modal": "10% - 100% - Copies behavior of currently mimicked ghost.",
     "thresh_notes": "Copies behavior of currently mimicked ghost.",
-    "counters": "In 0 evidence, check the ghost's favorite room for Ghost Orbs. If there are Ghost Orbs, it is The Mimic. Pay attention to the ghost behavior each hunt. If the behavior changes wildly between hunts (it appears to be a different ghost each time), it is The Mimic. Check the ghost's favorite room for Ghost Orbs. If there are <i>no</i> Ghost Orbs, it is <i>not</i> The Mimic."
+    "counters": "In 0 evidence, check the ghost's favorite room for Ghost Orbs. If there are Ghost Orbs, it is The Mimic. Pay attention to the ghost behavior each hunt. If the behavior changes wildly between hunts (it appears to be a different ghost each time), it is The Mimic. Check the ghost's favorite room for Ghost Orbs. If there are <i>no</i> Ghost Orbs, it is <i>not</i> The Mimic.",
+    "alias": [
+      "Il Mimo",
+      "Mimo"
+    ]
   },
   {
     "name": "The Twins",
@@ -546,7 +542,12 @@ const GHOSTS_EN = [
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "If the ghost alternates between 1.5m/s and 1.9m/s speed between hunts, it could be The Twins. If there are interactions far away from the ghost room frequently, it could be The Twins."
+    "counters": "If the ghost alternates between 1.5m/s and 1.9m/s speed between hunts, it could be The Twins. If there are interactions far away from the ghost room frequently, it could be The Twins.",
+    "alias": [
+      "I gemelli",
+      "Gemelli",
+      "Gemello"
+    ]
   },
   {
     "name": "Wraith",
