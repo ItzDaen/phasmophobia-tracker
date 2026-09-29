@@ -44,14 +44,15 @@ The Italian names are searchable and shown as a subtitle.
 
 ## Running it locally
 
-Any static file server works. It must be served over HTTP rather than opened as
-`file://`, because the service worker and the module-free scripts need a real
-origin.
+Any static file server works. It has to be served over HTTP rather than opened
+as `file://`, because the service worker needs a real origin.
 
 ```bash
-python3 -m http.server 8000
-# then open http://127.0.0.1:8000/
+python3 -m http.server
+# or: npx serve
 ```
+
+Then open the address the server prints.
 
 ## Tests
 
@@ -59,19 +60,22 @@ There is no build step and no framework: the tests run against the real files.
 
 ```bash
 # data integrity: locale parity, evidence ids, filter logic, duplicated
-# sentences, tells that only restate the ability
+# sentences, ability/speed_modal copy-paste, speeds that contradict the badge
 node tools/smoke-test.js
 
 # drives the actual page in headless Chromium: CSP violations, console errors,
 # filtering, the modal, keyboard handling, language switching, theme switching.
-# Requires the dev server on port 8731 and a `ws` install.
-python3 -m http.server 8731 &
-node tools/browser-test.js
+# Needs the static server already running, and a `ws` install. Pass the address
+# the server printed.
+node tools/browser-test.js <address printed by the server>
 ```
 
 `tools/browser-test.js` catches the class of bug that static review misses. It
 found a race where closing a modal in the same frame as opening it left it stuck
 open, and it caught the evidence pills failing to cycle under fast input.
+
+Both files are dev-only: nothing in `index.html` references them, so they are
+served as static files but never loaded by the app.
 
 ## Project structure
 

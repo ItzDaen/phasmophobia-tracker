@@ -7,13 +7,27 @@
  */
 const { spawn } = require('child_process');
 const http = require('http');
+const os = require('os');
+const path = require('path');
 
-const URL_BASE = process.argv[2] || 'http://127.0.0.1:8731/';
+// The address under test is required: this script has no opinion about which
+// static server you use, so it takes whatever one you already started.
+const URL_BASE = process.argv[2] || process.env.PHASMO_URL;
+if (!URL_BASE) {
+  console.error('usage: node tools/browser-test.js <url>');
+  console.error('  start a static server first, e.g. `python3 -m http.server`,');
+  console.error('  then pass the address it printed.');
+  process.exit(2);
+}
+
+// Fixed DevTools port for the browser instance this script drives, and a
+// throwaway profile so it never touches the developer's real browser data.
 const PORT = 9333;
+const PROFILE = path.join(os.tmpdir(), 'phasmophobia-tracker-browser-test');
 
-function get(path) {
+function get(urlPath) {
   return new Promise((resolve, reject) => {
-    http.get({ host: '127.0.0.1', port: PORT, path }, (res) => {
+    http.get({ host: '127.0.0.1', port: PORT, path: urlPath }, (res) => {
       let d = '';
       res.on('data', (c) => (d += c));
       res.on('end', () => resolve(JSON.parse(d)));
@@ -32,7 +46,7 @@ async function waitFor(fn, ms = 8000) {
 (async () => {
   const chrome = spawn('/usr/bin/chromium', [
     '--headless=new', `--remote-debugging-port=${PORT}`, '--no-sandbox',
-    '--disable-gpu', '--disable-dev-shm-usage', '--user-data-dir=/tmp/opencode/chrome-profile',
+    '--disable-gpu', '--disable-dev-shm-usage', `--user-data-dir=${PROFILE}`,
     'about:blank'
   ], { stdio: 'ignore' });
 
