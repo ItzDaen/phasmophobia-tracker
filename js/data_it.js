@@ -49,7 +49,8 @@ const GHOSTS_IT = [
     "tells": [
       "Terminerà immediatamente la caccia se entra in un nascondiglio ufficiale occupato da un giocatore rilevato.",
       "Se la caccia termina in questo modo, nella caccia successiva si dirigerà subito verso la posizione in cui si trovava il giocatore, fin dal periodo di grazia.",
-      "Raggiunge la velocità massima di <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> in 8.667s al contrario dei 26s standard."
+      "Raggiunge la velocità massima di <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> in 8.667s al contrario dei 26s standard.",
+      "Raggiunge una velocità massima di 2,53 m/s in LOS continua, e ci arriva in 8,667 s invece dei 13 s standard, perché accelera a 0,075× la base al secondo invece che a 0,05×."
     ],
     "speed_badge": "1.53",
     "speed_modal": "1.53 m/s.",
@@ -72,7 +73,7 @@ const GHOSTS_IT = [
       "Cacce basate sulla sanità mentale del bersaglio anziché sulla sanità mentale media.",
       "Inseguirà il bersaglio solo durante la caccia (se il bersaglio si trova all'interno).",
       "Il bersaglio perde il 15% di sanità mentale se tocca il fantasma durante un evento fantasma cantante (il drenaggio standard è del 10%).",
-      "Caccia in base alla sanità del suo bersaglio e non alla media del gruppo, quindi il numero sul diario inganna: controlla direttamente la tessera del bersaglio."
+      "Non può ferire nessuno tranne il suo bersaglio: non insegue i giocatori non bersaglio e li attraversa senza danno anche a contatto. Se il bersaglio è fuori, caccia chiunque riesca a raggiungere, quindi la regola non vale più."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -151,14 +152,14 @@ const GHOSTS_IT = [
       "writing",
       "dots"
     ],
-    "ability": "Ha sempre <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> del giocatore durante le cacce, il che significa che non puoi nasconderti da un Deogen.",
+    "ability": "Durante una caccia ha <abbr class=\"los-term\" title=\"Line of Sight (Linea di Vista)\">LOS</abbr> su tutti i giocatori della mappa e non usa mai lo stato vagante, quindi non puoi nasconderti da un Deogen. Si fissa sul giocatore più vicino per 10 secondi, poi ne ripiega un altro ogni 5-10 secondi, e l'incenso lo costringe a cambiare bersaglio appena finisce l'accecamento.",
     "tells": [
-      "33% di probabilità di emettere respiri affannosi attraverso la spirit box quando ci si trova entro 1 metro dal fantasma.",
-      "Velocità di caccia molto elevata, ma rallenta man mano che si avvicina al giocatore bersaglio.",
-      "È più visibile durante la caccia."
+      "La velocità segue la distanza di percorso dal bersaglio invece della linea di vista: circa 3,0 m/s oltre 5,3 m, che scende a 0,4 m/s entro 2,4 m, con una curva esponenziale nel mezzo. L'incenso lo blocca a 0,4 m/s, o a 1,6 m/s con difficoltà Ghost Speed al 125%/150%.",
+      "33% di probabilità di emettere un respiro pesante nella spirit box quando sei entro 1 m da lui.",
+      "Sfarfalla ed è visibile per molto più a lungo durante le cacce rispetto a qualsiasi altro fantasma, ed è il motivo per cui sembra veloce anche mentre striscia."
     ],
     "speed_badge": "0.4 - 3.0",
-    "speed_modal": "0.4 - 3.0 m/s - 3,0 m/s quando è lontano, scende a 0,4 m/s quando è vicino al giocatore.",
+    "speed_modal": "0,4 - 3,0 m/s - 3,0 m/s quando è lontano dal bersaglio, che scende gradualmente a 0,4 m/s addosso a lui. Dipende dalla distanza di percorso, non dalla linea di vista.",
     "thresh_badge": "40%",
     "thresh_modal": "40% - Non caccia fino al raggiungimento del 40% di sanità mentale media.",
     "thresh_notes": "Non caccia fino al raggiungimento del 40% di sanità mentale media.",
@@ -176,10 +177,10 @@ const GHOSTS_IT = [
       "Passa attraverso 3 stati che modificano la velocità e altri comportamenti [Normale > Infuriato > Indebolito >...].",
       "Può cacciare direttamente sopra un crocifisso Tier 1 posato a terra quando è in stato Infuriato.",
       "La soglia media di sanità mentale della caccia è del 50% nello stato Normale, del 60% nello stato Infuriato e del 40% nello stato Indebolito.",
-      "La velocità del fantasma è di 1,7 m/s nello stato Normale, 1,96 m/s nello stato Infuriato e 1,36 m/s nello stato Indebolito."
+      "La velocità del fantasma è di 1,7 m/s nello stato Normale, 1,955 m/s nello stato Infuriato e 1,36 m/s nello stato Indebolito."
     ],
-    "speed_badge": "1.36 - 1.96",
-    "speed_modal": "1.36 - 1.96 (Alt: 1.7) m/s - 1,7 m/s in stato Normale, 1,96 m/s in stato Infuriato, 1,36 m/s in stato Indebolito.",
+    "speed_badge": "1.36 - 1.955",
+    "speed_modal": "1.36 - 1.955 (Alt: 1.7) m/s - 1,7 m/s in stato Normale, 1,955 m/s in stato Infuriato, 1,36 m/s in stato Indebolito.",
     "thresh_badge": "40% - 60%",
     "thresh_modal": "40% - 60% - 50% in stato Normale, 60% in stato Infuriato, 40% in stato Indebolito.",
     "thresh_notes": "50% in stato Normale, 60% in stato Infuriato, 40% in stato Indebolito.",
@@ -205,7 +206,7 @@ const GHOSTS_IT = [
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "Se il fantasma cambia la sua stanza preferita, <i>non</i> è un Goryo."
+    "counters": "Controlla la sagoma del D.O.T.S.: esiste solo sul feed della video camera, e solo mentre il fantasma è nella sua stanza preferita senza che nessun giocatore la condivida. Segui in quale stanza si stabilisce durante tutto il contratto: non può cambiare stanza preferita in nessuna difficoltà, quindi un Goryo che passa da una stanza all'altra è già escluso. L'unica cosa che può spostarlo è il desiderio di sanità della Zampa di Scimmia, quindi se hai usato il desiderio e poi ha cambiato stanza, il test non vale più."
   },
   {
     "name": "Hantu",
@@ -298,18 +299,19 @@ const GHOSTS_IT = [
       "writing",
       "freezing"
     ],
-    "ability": "Più veloce quando la sanità mentale media è più bassa, può raggiungere una velocità di 3,71 m/s quando è in <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> continuo.",
+    "ability": "La velocità base aumenta con ogni 5% di sanità media persi sotto la soglia del 50%: 1,5 m/s al 45% o più, poi 1,583, 1,66, 1,749, 1,832, 1,915, 1,998, 2,081, 2,164 e 2,25 m/s man mano che la sanità scende allo 0%. I 2,25 m/s base si sommano all'accelerazione LOS normale, quindi può arrivare a 3,71 m/s in LOS continua.",
     "tells": [
-      "Lancia una maledizione sul giocatore quando: 1. Sente qualsiasi risposta proveniente dalla spirit box; 2. Sente un suono paranormale proveniente dal microfono parabolico; 3. Qualsiasi suono registrabile dal registratore audio (deve essere registrato). Ciò causa un calo passivo della sanità mentale due volte più veloce (anche in una stanza illuminata).",
-      "Lancia una maledizione sul giocatore quando viene udito tramite il microfono parabolico, la maledizione fa diminuire la sanità mentale 2 volte più velocemente.",
-      "La durata dell'effetto incenso durante le cacce è aumentata da 5 a 7 secondi."
+      "Mette una maledizione sul giocatore quando sente una risposta qualsiasi della spirit box, un suono paranormale dal microfono parabolico o un suono registrabile dal registratore audio. La maledizione fa scendere la sanità passiva al doppio della velocità, anche in una stanza illuminata.",
+      "La velocità base di caccia sale con ogni 5% di sanità media sotto il 50%: da 1,5 m/s fino a 2,25 m/s, e l'accelerazione per LOS la porta fino a 3,71 m/s.",
+      "L'incenso lo acceca per 7 secondi durante una caccia, contro i 5 standard.",
+      "Una volta messa, la maledizione resta finché il fantasma non viene incensato, quindi la sanità continua a scendere anche in una stanza illuminata."
     ],
     "speed_badge": "1.5 - 2.25",
-    "speed_modal": "1.5 - 2.25 m/s - Più veloce quando la sanità mentale media è più bassa, può raggiungere una velocità di 3,71 m/s quando è in <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> continuo.",
+    "speed_modal": "1,5 - 2,25 m/s - Sale con la sanità media in calo (1,5 m/s al 45% o più, 2,25 m/s allo 0-5%), e 3,71 m/s con l'accelerazione LOS al massimo.",
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "Se osservi un aumento della velocità tra una caccia e l'altra con l'accelerazione <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>, si tratta di un Moroi Dopo aver incensato il fantasma durante la caccia, se impiega più di 5 secondi per tornare da te (supponendo che possa ancora rilevarti), si tratta di un Moroi. Se dopo aver sentito un suono paranormale attraverso il microfono parabolico / registratore di suoni non sei in grado di fermare il drenaggio passivo della sanità mentale stando in una stanza illuminata (visualizza l'attività della sanità mentale), si tratta di un Moroi. Quando la tua sanità mentale media scende al di sotto del 40%, assumi pillole per la sanità mentale durante la caccia. Se la velocità del fantasma diminuisce in seguito, si tratta di un Moroi. Se dopo aver sentito un sussurro sul microfono parabolico / registratore audio la sanità mentale di un giocatore sembra diminuire più rapidamente, potrebbe trattarsi di un Moroi."
+    "counters": "Osserva la velocità base fra una caccia e l'altra: un Moroi parte da 1,5 m/s e sale di un gradino per ogni 5% di sanità media persi, quindi un fantasma che è ancora veloce al 45% è un Moroi. Incensalo durante una caccia e cronometra il ritorno: di norma è accecato per 5 secondi, ma un Moroi impiega <b>7</b>, quindi se torna dopo più di 5 secondi è un Moroi. Se il calo passivo di sanità non si ferma in una stanza illuminata dopo un suono paranormale, è un Moroi. Sotto il 40% di sanità media, prendi una pillola di sanità e vedi se il fantasma rallenta visibilmente."
   },
   {
     "name": "Myling",
@@ -340,7 +342,7 @@ const GHOSTS_IT = [
     "ability": "Può far sparire le impronte digitali due volte più velocemente.",
     "tells": [
       "Impronte digitali speciali a 6 dita.",
-      "Cambierà i modelli per un singolo blink durante le cacce almeno una volta per ogni caccia di lunghezza standard.",
+      "Cambia modello di fantasma per esattamente un blink, e solo su timer specifici: il 12° timer di visibilità, poi 27°, 39°, 54°, 62°, 80°, 105° e 120° di una caccia, e il ciclo ricomincia. Il primo arriva circa 6-8 secondi dopo la fine del periodo di grazia, quindi una caccia che termina prima potrebbe non mostrarne nessuno.",
       "Ha il 25% di probabilità di non lasciare tracce ultraviolette (comprese le orme).",
       "25% di probabilità di mancare un passo durante gli eventi."
     ],
@@ -362,16 +364,16 @@ const GHOSTS_IT = [
     "tells": [
       "Passerà da uno stato \"calmo\" a uno stato \"aggressivo\" ogni 2 minuti (il timer inizia a metà dello stato \"calmo\" all'apertura della porta d'ingresso).",
       "65% quando aggressivo, 10% quando calmo.",
-      "Più veloce quando aggressivo (1,96 m/s), più lento quando calmo (1,45 m/s).",
+      "Più veloce quando aggressivo (1,955 m/s), più lento quando calmo (1,45 m/s).",
       "Può cambiare stato durante una caccia.",
       "La durata della caccia diminuisce del 20% se iniziata in uno stato aggressivo."
     ],
-    "speed_badge": "1.45 - 1.96",
-    "speed_modal": "1.45 - 1.96 m/s - Più veloce quando aggressivo (1,96 m/s), più lento quando calmo (1,45 m/s) Può cambiare stato durante una caccia.",
+    "speed_badge": "1.445 - 1.955",
+    "speed_modal": "1.445 - 1.955 m/s - Più veloce quando aggressivo (1,955 m/s), più lento quando calmo (1,45 m/s) Può cambiare stato durante una caccia.",
     "thresh_badge": "10% - 65%",
     "thresh_modal": "10% - 65% - 65% quando aggressivo, 10% quando calmo.",
     "thresh_notes": "65% quando aggressivo, 10% quando calmo.",
-    "counters": "Se durante una caccia il fantasma scende da 1,96 m/s a 1,45 m/s o salta da 1,45 m/s a 1,96 m/s, si tratta di un Obambo. Se il fantasma alterna una velocità compresa tra 1,45 m/s e 1,96 m/s tra una caccia e l'altra, potrebbe trattarsi di un Obambo."
+    "counters": "Se durante una caccia il fantasma scende da 1,955 m/s a 1,45 m/s o salta da 1,45 m/s a 1,955 m/s, si tratta di un Obambo. Se il fantasma alterna una velocità compresa tra 1,45 m/s e 1,955 m/s tra una caccia e l'altra, potrebbe trattarsi di un Obambo."
   },
   {
     "name": "Oni",
@@ -403,7 +405,7 @@ const GHOSTS_IT = [
     "ability": "Le fiamme agiscono come crocifissi, spegnendo una fiamma se questa tenta di dare la caccia (entro 4 m). Il fantasma dà la priorità alle fiamme rispetto ai crocifissi quando impedisce la caccia Più giocatori muoiono, più è probabile che la fiamma si spenga.",
     "tells": [
       "Cercherà di cacciare a qualsiasi sanità dopo aver spento una candela, se ne avrà spento almeno altre 2 dall'ultima volta che ha utilizzato la sua abilità per provare a cacciare.",
-      "L'unico fantasma in grado di spegnere la stessa fiamma due volte entro 20 secondi.",
+      "Può spegnere due volte la stessa torcia: i suoi tentativi di caccia ignorano il cooldown della torcia, quindi può riaccenderla entro 30 s dalla prima accensione e entro 20 s da ogni accensione successiva. Se un giocatore o l'Onryo la spegne, il cooldown di una torcia Tier III viene messo in pausa, non azzerato.",
       "Non può accendere fonti di fuoco."
     ],
     "speed_badge": "1.7",
@@ -663,7 +665,7 @@ const GHOSTS_IT = [
       "freezing",
       "dots"
     ],
-    "ability": "Può chiudere una porta e ridurre la sanità mentale dei giocatori vicini del 15% se nella stanza è presente una porta Incensare il fantasma lo costringerà a rimanere nella “stanza preferita” per tutta la durata dell'effetto dell'incenso (90 secondi). Non è possibile fornire prove DOTS mentre si è sotto l'effetto di un incenso (90 secondi) .",
+    "ability": "Può chiudere una porta e ridurre la sanità mentale dei giocatori vicini del 15% se nella stanza è presente una porta. Incensare il fantasma lo costringerà a rimanere nella “stanza preferita” per tutta la durata dell'effetto dell'incenso (90 secondi). Non è possibile fornire prove DOTS mentre si è sotto l'effetto di un incenso (90 secondi) .",
     "tells": [
       "L'unico fantasma in grado di chiudere o interagire con una porta di uscita al di fuori di una caccia/evento.",
       "Deve aprire/chiudere completamente una porta quando si interagisce con essa (al di fuori di una caccia).",
@@ -676,8 +678,9 @@ const GHOSTS_IT = [
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "Se in qualsiasi momento il fantasma interagisce con una porta (al di fuori di una caccia) e la porta non si apre/chiude completamente, <i>non</i> è uno Yurei. Posiziona dei sensori di movimento (o del sale) agli ingressi della stanza e incensa il fantasma. Se il fantasma lascia la stanza prima dei 90 secondi, <i>non</i> è uno Yurei Incensa il fantasma e osserva attentamente la stanza fantasma: se in qualsiasi momento durante i 90 secondi di durata dell'incenso il fantasma entra in uno stato DOTS, <i>non</i> si tratta di uno Yurei ."
+    "counters": "Se in qualsiasi momento il fantasma interagisce con una porta (al di fuori di una caccia) e la porta non si apre/chiude completamente, <i>non</i> è uno Yurei. Posiziona dei sensori di movimento (o del sale) agli ingressi della stanza e incensa il fantasma. Se il fantasma lascia la stanza prima dei 90 secondi, <i>non</i> è uno Yurei. Incensa il fantasma e osserva attentamente la stanza fantasma: se in qualsiasi momento durante i 90 secondi di durata dell'incenso il fantasma entra in uno stato DOTS, <i>non</i> si tratta di uno Yurei ."
   }
 ];
+
 
 

@@ -49,7 +49,8 @@ const GHOSTS_EN = [
     "tells": [
       "Will immediately end a hunt if the ghost enters an official hiding spot that a detected player is currently in.",
       "If a hunt ends when the ghost enters the same official hiding spot as a player, the ghost will walk toward that player's current location at the start of the following hunt, even during the grace period.",
-      "Reaches max <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed in 8.667s instead of the standard 13s."
+      "Reaches max <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed in 8.667s instead of the standard 13s.",
+      "Reaches a top speed of 2.53 m/s in continuous LOS, and it gets there in 8.667s instead of the standard 13s, because it accelerates at 0.075x base per second rather than 0.05x."
     ],
     "speed_badge": "1.53",
     "speed_modal": "1.53 m/s.",
@@ -72,7 +73,7 @@ const GHOSTS_EN = [
       "Hunts based on target's sanity instead of average sanity.",
       "Will only pursue its target during a hunt (if the target is inside).",
       "Target loses 15% sanity if they touch the ghost during a singing ghost event (standard drain is 10%).",
-      "Hunts based on its target's own sanity, not the group average, so the Journal sanity number is misleading: check the target's card directly."
+      "Cannot hurt anyone except its target: it will not chase non-target players and passes harmlessly through them even on contact. If the target is outside, it hunts any player it can reach, so the rule stops applying."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -151,14 +152,14 @@ const GHOSTS_EN = [
       "writing",
       "dots"
     ],
-    "ability": "Always has <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> of the player during hunts, meaning you cannot hide from a Deogen.",
+    "ability": "Always has <abbr class=\"los-term\" title=\"Line of Sight (Linea di Vista)\">LOS</abbr> of every player on the map during a hunt and never uses the roaming state at all, so you cannot hide from a Deogen. It locks onto the nearest player and focuses them for 10 seconds, then re-picks every 5-10 seconds, and Incense forces an immediate retarget when the blinding wears off.",
     "tells": [
-      "33% chance to give heavy breathing through spirit box when within 1m of the ghost.",
-      "Very fast hunt speed, but will slow down as it nears the targeted player.",
-      "Is more visible during hunts."
+      "Speed follows its pathfinding distance to its target rather than line of sight: about 3.0 m/s beyond 5.3m, dropping to 0.4 m/s inside 2.4m, with an exponential curve in between. Incense pins it to 0.4 m/s, or 1.6 m/s on 125%/150% Ghost Speed difficulties.",
+      "33% chance to give heavy breathing through the spirit box when you are within 1m of it.",
+      "Flickers and stays visible for noticeably longer during hunts than any other ghost, which is why it looks fast even when it is crawling."
     ],
     "speed_badge": "0.4 - 3.0",
-    "speed_modal": "0.4 - 3.0 m/s - 3.0m/s when far away, drops to 0.4m/s when close to the player.",
+    "speed_modal": "0.4 - 3.0 m/s - 3.0m/s while far from its target, easing down to 0.4m/s right on top of them. Based on pathfinding distance, not line of sight.",
     "thresh_badge": "40%",
     "thresh_modal": "40% - Does not hunt until 40% average sanity.",
     "thresh_notes": "Does not hunt until 40% average sanity.",
@@ -176,10 +177,10 @@ const GHOSTS_EN = [
       "Cycles through 3 states that change speed and other behaviors [Normal > Enraged > Weakened >...].",
       "Can hunt directly on top of a Tier 1 crucifix placed on the floor when enraged.",
       "Average hunt sanity threshold is 50% in Normal State, 60% in Enraged State, and 40% in Weakened State.",
-      "Ghost speed is 1.7m/s in Normal State, 1.96m/s in Enraged State, and 1.36m/s in Weakened State."
+      "Ghost speed is 1.7m/s in Normal State, 1.955m/s in Enraged State, and 1.36m/s in Weakened State."
     ],
-    "speed_badge": "1.36 - 1.96",
-    "speed_modal": "1.36 - 1.96 (Alt: 1.7) m/s - 1.7m/s in Normal State, 1.96m/s in Enraged State, 1.36m/s in Weakened State.",
+    "speed_badge": "1.36 - 1.955",
+    "speed_modal": "1.36 - 1.955 (Alt: 1.7) m/s - 1.7m/s in Normal State, 1.955m/s in Enraged State, 1.36m/s in Weakened State.",
     "thresh_badge": "40% - 60%",
     "thresh_modal": "40% - 60% - 50% in Normal State, 60% in Enraged State, 40% in Weakened State.",
     "thresh_notes": "50% in Normal State, 60% in Enraged State, 40% in Weakened State.",
@@ -205,7 +206,7 @@ const GHOSTS_EN = [
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "If the ghost changes its favorite room, it is <i>not</i> a Goryo."
+    "counters": "Check the D.O.T.S. silhouette: it only exists on a video camera feed, and only while the ghost is in its favourite room with no player sharing it. Watch which room it settles in across the whole contract: it cannot change favourite room on any difficulty, so a Goryo that wanders between rooms is already ruled out. The Monkey Paw 'sanity wish' is the only thing that can move it, so if you used the wish and it then changed rooms, the test no longer holds."
   },
   {
     "name": "Hantu",
@@ -298,18 +299,19 @@ const GHOSTS_EN = [
       "writing",
       "freezing"
     ],
-    "ability": "Faster when average sanity is lower, can reach a speed of 3.71 m/s when in continuous <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>.",
+    "ability": "Base speed rises with every 5% of average sanity lost below its 50% threshold: 1.5 m/s at 45% or higher, then 1.583, 1.66, 1.749, 1.832, 1.915, 1.998, 2.081, 2.164 and 2.25 m/s as sanity drops to 0%. The 2.25 m/s base then stacks with normal line-of-sight acceleration, so it can reach 3.71 m/s in continuous LOS.",
     "tells": [
-      "Places a curse on player when the player hears: (1) any response on the spirit box, (2) a paranormal sound on the parabolic microphone, or (3) any recordable sound on the sound recorder (must be recorded). This causes sanity to passively drain twice as fast (even in a lit room).",
-      "Places a curse on player when heard through parabolic microphone, curse drops sanity 2x as fast.",
-      "Incense blindness duration during hunts is increased from 5s to 7s."
+      "Places a curse on the player when they hear any spirit box response, a paranormal sound on the parabolic microphone, or any recordable sound on the sound recorder. The curse makes sanity drain passively twice as fast, even in a lit room.",
+      "Base hunt speed steps up with every 5% of average sanity below 50%: 1.5 m/s down to 2.25 m/s, then line-of-sight acceleration takes it as high as 3.71 m/s.",
+      "Incense blinds it for 7 seconds during a hunt, against the standard 5.",
+      "Placed on you, the curse stays until the ghost is incensed, so sanity keeps dropping even in a brightly lit room."
     ],
     "speed_badge": "1.5 - 2.25",
-    "speed_modal": "1.5 - 2.25 m/s - Faster when average sanity is lower, can reach a speed of 3.71 m/s when in continuous <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>.",
+    "speed_modal": "1.5 - 2.25 m/s - Steps up with falling average sanity (1.5 m/s at 45% or above, 2.25 m/s at 0-5%), and 3.71 m/s at maximum line-of-sight acceleration.",
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "If you observe an increase in speed between hunts with <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed up, it is a Moroi. After smudging a ghost during hunt, if it takes more than 5s to return to you (assuming it can still detect you), it is a Moroi. If after hearing a paranormal sound though the parabolic microphone/sound recorder you are unable to stop passive sanity drain by standing in a lit room (see sanity activity), it is a Moroi. Once your average sanity is below 40%, take sanity medication during a hunt. If the ghost's speed decreases afterward, it is a Moroi. If after hearing a whisper on the parabolic microphone/sound recorder a player's sanity seems to decrease more quickly, it could be a Moroi."
+    "counters": "Watch the base speed between hunts: a Moroi starts at 1.5 m/s and steps up a notch for every 5% of average sanity lost, so a ghost that is still fast at 45% is a Moroi. Smudge it during a hunt and time the return: it is normally blind for 5 seconds, but a Moroi takes <b>7</b>, so coming back later than 5 seconds is a Moroi. If the passive sanity drain will not stop even in a lit room after a paranormal sound, it is a Moroi. Below 40% average sanity, take a sanity pill and see whether the ghost visibly slows down."
   },
   {
     "name": "Myling",
@@ -340,7 +342,7 @@ const GHOSTS_EN = [
     "ability": "Can make fingerprints disappear twice as fast.",
     "tells": [
       "Special 6 fingered fingerprints.",
-      "Will change models for a single blink during hunts at least once per standard length hunt.",
+      "Changes ghost model for exactly one blink, and only on specific timers: the 12th, 27th, 39th, 54th, 62nd, 80th, 105th and 120th visibility timer of a hunt, then the cycle restarts. The first one lands about 6-8 seconds after the grace period ends, so a hunt that ends early may never produce one.",
       "Has a 25% chance to not leave ultraviolet evidence (including footprints).",
       "25% chance to miss a footstep during events."
     ],
@@ -362,16 +364,16 @@ const GHOSTS_EN = [
     "tells": [
       "Will switch between a 'calm' state and 'aggressive' state every 2 minutes (timer starts halfway through 'calm' state upon opening front door).",
       "65% when aggressive, 10% when calm.",
-      "Faster when aggressive (1.96m/s), slower when calm (1.45m/s).",
+      "Faster when aggressive (1.955m/s), slower when calm (1.45m/s).",
       "Can change states during a hunt.",
       "Hunt duration is decreased by 20% when started in an aggressive state."
     ],
-    "speed_badge": "1.45 - 1.96",
-    "speed_modal": "1.45 - 1.96 m/s - Faster when aggressive (1.96m/s), slower when calm (1.45m/s) Can change states during a hunt.",
+    "speed_badge": "1.445 - 1.955",
+    "speed_modal": "1.445 - 1.955 m/s - Faster when aggressive (1.955m/s), slower when calm (1.45m/s) Can change states during a hunt.",
     "thresh_badge": "10% - 65%",
     "thresh_modal": "10% - 65% - 65% when aggressive, 10% when calm.",
     "thresh_notes": "65% when aggressive, 10% when calm.",
-    "counters": "If during a hunt the ghost drops from 1.96 m/s to 1.45 m/s or jumps from 1.45 m/s to 1.96m/s, it is an Obambo. If the ghost alternates between 1.45m/s and 1.96m/s speed between hunts, it could be an Obambo."
+    "counters": "If during a hunt the ghost drops from 1.96 m/s to 1.45 m/s or jumps from 1.45 m/s to 1.955m/s, it is an Obambo. If the ghost alternates between 1.45m/s and 1.955m/s speed between hunts, it could be an Obambo."
   },
   {
     "name": "Oni",
@@ -403,7 +405,7 @@ const GHOSTS_EN = [
     "ability": "Flames act like crucifixes, will blow out a flame if it tries to hunt (within 4m). Ghost prioritizes flames over crucifixes when preventing hunts. More likely to extinguish a flame, the more players that are dead.",
     "tells": [
       "Will attempt to hunt at any sanity after extinguishing a flame, if it has extinguished at least 2 others since its last ability hunt attempt.",
-      "Only ghost that can extinguish the same firelight twice within 20s.",
+      "Can put out the same firelight twice: its hunt attempts override a firelight's own cooldown, so it can relight within 30s of the first lighting and within 20s of every lighting after that. A Tier III firelight's cooldown is paused, not reset, if a player or the Onryo turns it off.",
       "Cannot light fire sources."
     ],
     "speed_badge": "1.7",
@@ -663,7 +665,7 @@ const GHOSTS_EN = [
       "freezing",
       "dots"
     ],
-    "ability": "Can shut a door and drop sanity of nearby players by 15% if a door is in the room Incensing the ghost will trap the ghost in its room for the duration of the incense effect (90s). Cannot give DOTS evidence while under the effects of an incense (90s).",
+    "ability": "Can shut a door and drop sanity of nearby players by 15% if a door is in the room. Incensing the ghost will trap the ghost in its room for the duration of the incense effect (90s). Cannot give DOTS evidence while under the effects of an incense (90s).",
     "tells": [
       "Only ghost that can close or interact with an exit door outside of a hunt/event.",
       "Must fully open/shut a door when doing door interactions (outside of a hunt).",
@@ -676,8 +678,9 @@ const GHOSTS_EN = [
     "thresh_badge": "50%",
     "thresh_modal": "50%",
     "thresh_notes": "",
-    "counters": "If at any point the ghost interacts with a door (outside of a hunt) and the door does not fully open/shut, it is <i>not</i> a Yurei. Place motion sensors (or salt) in the entrances to the room and smudge the ghost. If the ghost leaves the room before 90s, it is <i>not</i> a Yurei Smudge the ghost and watch the ghost room closely, if at any point within the 90s smudge duration the ghost enters a DOTS state, it is <i>not</i> a Yurei."
+    "counters": "If at any point the ghost interacts with a door (outside of a hunt) and the door does not fully open/shut, it is <i>not</i> a Yurei. Place motion sensors (or salt) in the entrances to the room and smudge the ghost. If the ghost leaves the room before 90s, it is <i>not</i> a Yurei. Smudge the ghost and watch the ghost room closely, if at any point within the 90s smudge duration the ghost enters a DOTS state, it is <i>not</i> a Yurei."
   }
 ];
+
 
 

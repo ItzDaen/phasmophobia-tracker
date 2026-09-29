@@ -124,7 +124,7 @@ const strip = (s) => s.replace(/<[^>]*>/g, ' ').replace(/[^a-z0-9 ]/gi, ' ').toL
 const dupes = [];
 for (const [label, ghosts] of [['EN', GHOSTS_EN], ['IT', GHOSTS_IT]]) {
   for (const g of ghosts) {
-    for (const field of ['ability', 'counters', ...g.tells]) {
+    for (const field of ['ability', 'counters', 'speed_modal', ...g.tells]) {
       const sents = field.split(/(?<=[.!?])\s+/).map((s) => strip(s).join(' ')).filter((s) => s.length > 40);
       const seen = new Set();
       for (const s of sents) {
@@ -135,6 +135,55 @@ for (const [label, ghosts] of [['EN', GHOSTS_EN], ['IT', GHOSTS_IT]]) {
   }
 }
 check('no duplicated sentences inside a field', dupes.length === 0, dupes.join(' | '));
+
+// A missing full stop in the middle of a string cannot be seen by an
+// end-of-string check. This is a heuristic, not a proof: proper nouns and
+// capitalised in-game terms (Ghost Orbs, Tier 3, Ouija, the Deogen) all look
+// identical to a run-on, so this reports a shortlist for a human to read
+// rather than failing the build.
+const runons = [];
+for (const [label, ghosts] of [['EN', GHOSTS_EN], ['IT', GHOSTS_IT]]) {
+  for (const g of ghosts) {
+    for (const field of ['ability', 'counters', 'speed_modal', ...g.tells]) {
+      for (const m of field.matchAll(/\b([a-zà-ÿ]{3,})\s+([A-ZÀ-Ý][a-zà-ÿ]{3,})\b/g)) {
+        runons.push(`${label} ${g.name} (${field}): "${m[0]}"`);
+      }
+    }
+  }
+}
+console.log(`  info  ${runons.length} places where a lowercase word is followed by a capitalised one (review for missing full stops)`);
+if (runons.length) {
+  for (const r of runons.slice(0, 4)) console.log(`        e.g. ${r}`);
+}
+
+// ability and speed_modal are rendered in different places, so a verbatim copy
+// wastes a panel and hides information.
+const copyPanels = [];
+for (const [label, ghosts] of [['EN', GHOSTS_EN], ['IT', GHOSTS_IT]]) {
+  for (const g of ghosts) {
+    if (g.ability.trim() && g.ability.trim() === g.speed_modal.trim()) copyPanels.push(`${label} ${g.name}`);
+  }
+}
+check('ability is not a copy of speed_modal', copyPanels.length === 0, copyPanels.join());
+
+// A speed quoted in the ability must not contradict the badge shown on the card.
+const speedClash = [];
+for (const [label, ghosts] of [['EN', GHOSTS_EN], ['IT', GHOSTS_IT]]) {
+  for (const g of ghosts) {
+    if (g.speed_badge === '1.7' || !g.speed_badge) continue;
+    const badge = new Set((g.speed_badge.match(/\d+\.\d+/g) || []).map((v) => v.replace(/0+$/, '').replace(/\.$/, '')));
+    // speeds the ability describes as base states must appear on the badge;
+    // an explicit max-LOS figure is allowed to exceed the badge range
+    for (const m of g.ability.matchAll(/(\d+\.\d{2,3})\s*m\/s(?!\s*(?:at maximum|with maximum))/g)) {
+      const v = m[1].replace(/0+$/, '').replace(/\.$/, '');
+      const inBadge = badge.has(v) || badge.has(v.replace(/\.\d$/, ''));
+      if (!inBadge && !/LOS|line-of-sight|line of sight/i.test(g.ability.slice(Math.max(0, m.index - 90), m.index + 40))) {
+        speedClash.push(`${label} ${g.name}: ability quotes ${v} m/s, badge "${g.speed_badge}"`);
+      }
+    }
+  }
+}
+check('ability speeds agree with the badge', speedClash.length === 0, speedClash.join(' | '));
 
 // Tells that merely repeat the ability are not automatically wrong (the two
 // sections legitimately overlap), but a *verbatim* repeat is a smell worth
@@ -154,6 +203,9 @@ console.log(`  info  tells per ghost: min ${Math.min(...GHOSTS_EN.map((g) => g.t
 console.log(`  info  ghosts with fewer than 3 tells: ${thin.length ? thin.join(', ') : 'none'}`);
 const losHits = GHOSTS_EN.filter((g) => /LOS|line of sight|line-of-sight/i.test(g.ability + g.tells.join(' '))).length;
 console.log(`  info  ${losHits} ghosts mention line of sight`);
+const badgeCounts = {};
+for (const g of GHOSTS_EN) badgeCounts[g.speed_badge] = (badgeCounts[g.speed_badge] || 0) + 1;
+console.log(`  info  distinct speed badges: ${Object.keys(badgeCounts).length}`);
 
 console.log(failures === 0 ? '\nAll checks passed.' : `\n${failures} check(s) failed.`);
 process.exit(failures === 0 ? 0 : 1);
