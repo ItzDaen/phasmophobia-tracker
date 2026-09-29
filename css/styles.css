@@ -873,3 +873,7 @@ abbr.los-term {
 abbr.los-term:hover {
   text-shadow: 0 0 8px var(--accent-glow);
 }
+
+/* Utility Classes for JS Injection */
+.text-danger { color: #ff3333; }
+.text-info { color: #00f3ff; }

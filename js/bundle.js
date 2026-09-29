@@ -89,8 +89,8 @@ function renderGhosts() {
         if (speedMatches && speedMatches.length > 1) {
             formattedSpeed = speedStr.replace(/[\d\.]+/g, (match) => {
                 const val = parseFloat(match);
-                if (val > 1.7) return `<span style="color:#ff3333;">${match}</span>`;
-                if (val < 1.7) return `<span style="color:#00f3ff;">${match}</span>`;
+                if (val > 1.7) return `<span class="text-danger">${match}</span>`;
+                if (val < 1.7) return `<span class="text-info">${match}</span>`;
                 return match;
             });
         }
@@ -103,8 +103,8 @@ function renderGhosts() {
         if (threshMatches && threshMatches.length > 1) {
             formattedThresh = threshStr.replace(/\d+%/g, (match) => {
                 const val = parseInt(match);
-                if (val > 50) return `<span style="color:#ff3333;">${match}</span>`;
-                if (val < 50) return `<span style="color:#00f3ff;">${match}</span>`;
+                if (val > 50) return `<span class="text-danger">${match}</span>`;
+                if (val < 50) return `<span class="text-info">${match}</span>`;
                 return match;
             });
         }
