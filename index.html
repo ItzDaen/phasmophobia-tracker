@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="description" content="Phasmophobia Tracker PWA: studia i fantasmi e le loro abilità in modo rapido e offline.">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:;">
+    <meta name="description" content="Phasmophobia Tracker PWA: studia i fantasmi e le loro abilita' in modo rapido e offline.">
+    <!-- No 'unsafe-inline' anywhere: every inline style and handler was removed. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'">
 
     <title>Phasmophobia Tracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,127 +15,158 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="phasmoapplogo.png">
-    <link rel="apple-touch-icon" href="phasmoapplogo.png">
-    
-    <!-- Open Graph / Social Media Meta Tags -->
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Phasmophobia Tracker">
-    <meta property="og:description" content="Studia i fantasmi e le loro abilità uniche! / Study ghosts and their unique abilities!">
-    <meta property="og:image" content="https://itzdaen.github.io/phasmophobia-tracker/phasmoapplogo.png">
+    <meta property="og:description" content="Studia i fantasmi e le loro abilita' uniche! / Study ghosts and their unique abilities!">
+    <meta property="og:image" content="https://itzdaen.github.io/phasmophobia-tracker/icons/icon-512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
     <meta property="og:url" content="https://itzdaen.github.io/phasmophobia-tracker/">
     <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
 
     <meta name="theme-color" content="#0f111a">
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Rajdhani:wght@500;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
     <script src="js/init.js"></script>
 </head>
 <body>
-    <div id="matrix-bg"></div>
+    <div id="matrix-bg" aria-hidden="true"></div>
+    <a class="skip-link" href="#ghost-list">Skip to ghosts</a>
+
     <div class="app-container">
-        
-        <!-- sidebar / header -->
+
         <aside class="app-sidebar">
             <header class="top-nav">
                 <h1 id="ui-title">Phasmophobia<br>Tracker</h1>
                 <div class="nav-actions">
-                    <button class="icon-btn" id="theme-toggle" title="Toggle Dark/Light Mode">
-                        <i class="fa-solid fa-moon"></i>
+                    <button type="button" class="icon-btn" id="info-btn" title="Guide &amp; glossary" aria-label="Guide and glossary">
+                        <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
                     </button>
-                    <button class="icon-btn lang-btn" id="lang-toggle" title="Switch Language">
-                        <i class="fa-solid fa-globe"></i><span id="lang-text">EN</span>
+                    <button type="button" class="icon-btn" id="theme-toggle" title="Toggle dark/light mode" aria-label="Toggle dark or light mode" aria-pressed="false">
+                        <i class="fa-solid fa-moon" aria-hidden="true"></i>
                     </button>
-                    <button class="icon-btn" id="reset-btn" title="Reset"><i class="fa-solid fa-rotate-right"></i></button>
+                    <button type="button" class="icon-btn lang-btn" id="lang-toggle" title="Switch language" aria-label="Switch language">
+                        <i class="fa-solid fa-globe" aria-hidden="true"></i><span id="lang-text">EN</span>
+                    </button>
+                    <button type="button" class="icon-btn" id="reset-btn" title="Reset" aria-label="Reset all evidence filters">
+                        <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+                    </button>
                 </div>
             </header>
 
             <div class="sidebar-content">
                 <div class="search-container">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="ghost-search" placeholder="Cerca fantasma..." autocomplete="off">
+                    <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+                    <label class="sr-only" for="ghost-search">Search ghosts</label>
+                    <input type="search" id="ghost-search" placeholder="Search ghost..." autocomplete="off" spellcheck="false">
                 </div>
 
                 <section class="evidence-bar">
-                    <h3 class="desktop-only-title" id="lbl-ev-title">Evidences</h3>
-                    <div class="evidence-scroll" id="evidence-grid">
-                        <!-- evidences -->
-                    </div>
+                    <h3 class="desktop-only-title" id="lbl-ev-title">Evidence</h3>
+                    <p class="evidence-hint" id="lbl-ev-hint">Tap again to cycle: on &rarr; off &rarr; unknown</p>
+                    <div class="evidence-scroll" id="evidence-grid" role="group" aria-labelledby="lbl-ev-title"></div>
                 </section>
             </div>
-            
+
             <footer class="sidebar-footer">
                 <p class="footer-credit">By ItzDaen</p>
-                
+                <p class="footer-context">Data for Phasmophobia <span id="game-version">0.19.0.1</span></p>
             </footer>
         </aside>
 
-        <!-- ghost grid -->
         <main class="ghost-list-container">
-            <div class="ghost-list" id="ghost-list">
-                <!-- populated via js -->
+            <div class="results-bar">
+                <p class="results-count" id="results-count" role="status" aria-live="polite"></p>
+            </div>
+
+            <div class="ghost-list" id="ghost-list"></div>
+
+            <div class="empty-state" id="empty-state" hidden>
+                <i class="fa-solid fa-ghost" aria-hidden="true"></i>
+                <p class="empty-title" id="empty-title">No ghost matches this evidence.</p>
+                <p class="empty-hint" id="empty-hint">Double-check the evidence, or reset the filters.</p>
+                <button type="button" class="btn-secondary" id="empty-reset">Reset filters</button>
             </div>
         </main>
-        
+
     </div>
 
-    <!-- modal -->
-    <div class="modal" id="ghost-modal">
-        <button class="modal-nav-btn prev-btn" id="modal-prev"><i class="fa-solid fa-chevron-left"></i></button>
-        <button class="modal-nav-btn next-btn" id="modal-next"><i class="fa-solid fa-chevron-right"></i></button>
-        <div class="modal-content">
-            <div class="modal-drag-handle mobile-only"></div>
-            <button class="modal-close-btn desktop-only" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="modal-header-new" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                <div class="m-title-area" style="text-align: center;">
+    <!-- ghost detail -->
+    <div class="modal" id="ghost-modal" role="dialog" aria-modal="true" aria-labelledby="m-name" hidden>
+        <button type="button" class="modal-nav-btn prev-btn desktop-only" id="modal-prev" aria-label="Previous ghost">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="modal-nav-btn next-btn desktop-only" id="modal-next" aria-label="Next ghost">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+        <div class="modal-content" id="modal-panel">
+            <div class="modal-drag-handle mobile-only" aria-hidden="true"></div>
+            <button type="button" class="modal-close-btn" id="modal-close" aria-label="Close">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+
+            <div class="modal-header">
+                <div class="m-title-area">
                     <h2 id="m-name" class="m-ghost-name"></h2>
-                    <div class="m-tags" id="m-ev-tags" style="justify-content: center;"></div>
+                    <p class="m-alias" id="m-alias" hidden></p>
+                    <div class="m-tags" id="m-ev-tags"></div>
                 </div>
             </div>
-            
-            <div class="m-tabs">
-                <button class="m-tab-btn active" data-tab="tab-overview"><i class="fa-solid fa-book-journal-whills"></i> <span id="lbl-tab-overview">Panoramica</span></button>
-                <button class="m-tab-btn" data-tab="tab-stats"><i class="fa-solid fa-chart-simple"></i> <span id="lbl-tab-stats">Statistiche</span></button>
-                <button class="m-tab-btn" data-tab="tab-combat"><i class="fa-solid fa-shield-halved"></i> <span id="lbl-tab-combat">Sopravvivenza</span></button>
+
+            <div class="m-tabs" role="tablist" aria-label="Ghost details">
+                <button type="button" class="m-tab-btn active" id="tabbtn-overview" data-tab="tab-overview" role="tab" aria-selected="true" aria-controls="tab-overview">
+                    <i class="fa-solid fa-book-journal-whills" aria-hidden="true"></i> <span id="lbl-tab-overview">Overview</span>
+                </button>
+                <button type="button" class="m-tab-btn" id="tabbtn-stats" data-tab="tab-stats" role="tab" aria-selected="false" aria-controls="tab-stats" tabindex="-1">
+                    <i class="fa-solid fa-chart-simple" aria-hidden="true"></i> <span id="lbl-tab-stats">Stats</span>
+                </button>
+                <button type="button" class="m-tab-btn" id="tabbtn-combat" data-tab="tab-combat" role="tab" aria-selected="false" aria-controls="tab-combat" tabindex="-1">
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> <span id="lbl-tab-combat">Survival</span>
+                </button>
             </div>
-            
+
             <div class="m-tab-content">
-                <!-- overview tab -->
-                <div class="m-tab-pane active" id="tab-overview">
+                <div class="m-tab-pane active" id="tab-overview" role="tabpanel" aria-labelledby="tabbtn-overview" tabindex="0">
                     <div class="m-card">
-                        <h3><i class="fa-solid fa-bolt" style="color: var(--accent);"></i> <span id="lbl-ability">Abilità Unica</span></h3>
+                        <h3><i class="fa-solid fa-bolt accent-icon" aria-hidden="true"></i> <span id="lbl-ability">Unique ability</span></h3>
                         <p id="m-ability"></p>
                     </div>
-                    <div class="m-card" style="margin-top: 16px;">
-                        <h3><i class="fa-solid fa-eye" style="color: var(--gold);"></i> <span id="lbl-tells">Comportamenti Evidenti</span></h3>
+                    <div class="m-card">
+                        <h3><i class="fa-solid fa-eye gold-icon" aria-hidden="true"></i> <span id="lbl-tells">Behavioural tells</span></h3>
                         <ul id="m-tells" class="tells-list"></ul>
                     </div>
+                    <div class="m-card" id="m-bug-card" hidden>
+                        <h3><i class="fa-solid fa-triangle-exclamation danger-icon" aria-hidden="true"></i> <span id="lbl-bug">Known issue</span></h3>
+                        <p id="m-bug"></p>
+                    </div>
                 </div>
-                
-                <!-- stats tab -->
-                <div class="m-tab-pane" id="tab-stats">
+
+                <div class="m-tab-pane" id="tab-stats" role="tabpanel" aria-labelledby="tabbtn-stats" tabindex="0" hidden>
                     <div class="m-stats-container">
                         <div class="m-card speed-zone" id="m-speed-section">
                             <div class="m-stat-header">
-                                <h3><i class="fa-solid fa-gauge-high"></i> <span id="lbl-speed">Velocità</span></h3>
+                                <h3><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> <span id="lbl-speed">Speed</span></h3>
                                 <span id="m-speed" class="speed-badge"></span>
                             </div>
-                            <p id="m-speed-notes" class="m-notes" style="display: none;"></p>
+                            <p id="m-speed-notes" class="m-notes"></p>
                         </div>
-                        
+
                         <div class="m-card danger-zone" id="m-thresh-section">
                             <div class="m-stat-header">
-                                <h3><i class="fa-solid fa-skull"></i> <span id="lbl-thresh">Soglia Caccia</span></h3>
+                                <h3><i class="fa-solid fa-skull" aria-hidden="true"></i> <span id="lbl-thresh">Hunt threshold</span></h3>
                                 <span id="m-thresh" class="thresh-badge"></span>
                             </div>
                             <p id="m-thresh-notes" class="m-notes"></p>
                         </div>
                     </div>
                 </div>
-                
-                <!-- combat tab -->
-                <div class="m-tab-pane" id="tab-combat">
+
+                <div class="m-tab-pane" id="tab-combat" role="tabpanel" aria-labelledby="tabbtn-combat" tabindex="0" hidden>
                     <div class="m-card safe-zone">
-                        <h3><i class="fa-solid fa-shield-heart" style="color: var(--success);"></i> <span id="lbl-counters">Difesa</span></h3>
+                        <h3><i class="fa-solid fa-shield-heart success-icon" aria-hidden="true"></i> <span id="lbl-counters">Survival</span></h3>
                         <p id="m-counters"></p>
                     </div>
                 </div>
@@ -142,7 +174,23 @@
         </div>
     </div>
 
-    <div id="toast-container"></div>
+    <!-- guide / glossary -->
+    <div class="modal info-modal" id="info-modal" role="dialog" aria-modal="true" aria-labelledby="info-title" hidden>
+        <div class="modal-content" id="info-panel">
+            <button type="button" class="modal-close-btn" id="info-close" aria-label="Close">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <div class="modal-header">
+                <div class="m-title-area">
+                    <h2 id="info-title" class="m-ghost-name">Guide</h2>
+                </div>
+            </div>
+            <div class="info-body" id="info-body"></div>
+        </div>
+    </div>
+
+    <div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+    <script src="js/data_common.js"></script>
     <script src="js/data_en.js"></script>
     <script src="js/data_it.js"></script>
     <script src="js/bundle.js"></script>

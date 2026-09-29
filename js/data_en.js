@@ -1,3 +1,42 @@
+const EVIDENCES_EN = [
+  {
+    "id": "emf5",
+    "name": "EMF 5",
+    "icon": "fa-solid fa-wave-square"
+  },
+  {
+    "id": "spirit_box",
+    "name": "Spirit Box",
+    "icon": "fa-solid fa-radio"
+  },
+  {
+    "id": "uv",
+    "name": "Ultraviolet",
+    "icon": "fa-solid fa-hand"
+  },
+  {
+    "id": "orb",
+    "name": "Ghost Orb",
+    "icon": "fa-solid fa-video"
+  },
+  {
+    "id": "writing",
+    "name": "Ghost Writing",
+    "icon": "fa-solid fa-pen-fancy"
+  },
+  {
+    "id": "freezing",
+    "name": "Freezing Temp",
+    "icon": "fa-solid fa-snowflake"
+  },
+  {
+    "id": "dots",
+    "name": "D.O.T.S.",
+    "icon": "fa-solid fa-tower-broadcast"
+  }
+];
+
+
 const GHOSTS_EN = [
   {
     "name": "Aswang",
@@ -32,7 +71,8 @@ const GHOSTS_EN = [
       "33% chance to give 1 of 20 unique screams through the parabolic microphone/sound recorder.",
       "Hunts based on target's sanity instead of average sanity.",
       "Will only pursue its target during a hunt (if the target is inside).",
-      "Target loses 15% sanity if they touch the ghost during a singing ghost event (standard drain is 10%)."
+      "Target loses 15% sanity if they touch the ghost during a singing ghost event (standard drain is 10%).",
+      "Hunts based on its target's own sanity, not the group average, so the Journal sanity number is misleading: check the target's card directly."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -51,7 +91,7 @@ const GHOSTS_EN = [
     "ability": "Within 10m of the ghost, hunt speed and sanity threshold follow the closest player: 1.2 m/s at 45% if that player is standing still, 2.25 m/s at 65% if they are walking. Outside that radius it hunts normally, and accrued LOS speed is applied as soon as it leaves. Can only ever appear as a female ghost, with a female name and vocalisation.",
     "tells": [
       "Can only be female, ghost model and ghost name will reflect this.",
-      "Hunt speed and sanity are determined by player movement near the ghost."
+      "In normal play assume it hunts at 65% and simply hunts less often before 50% sanity, because you cannot avoid walking near it at some point."
     ],
     "speed_badge": "1.2 - 2.25",
     "speed_modal": "1.2 - 2.25 (Alt: 1.7) m/s - 2.25m/s if nearest player is walking within 10m of the ghost, 1.2m/s if nearest player is not moving within 10m of the ghost, 1.7m/s if all players are further than 10m from the ghost. Has <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed-up while greater than 10m from any player. Once within 10m, <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed-up is no longer applied, but is still accumulated in the background.",
@@ -91,7 +131,8 @@ const GHOSTS_EN = [
     "ability": "Can hunt at any sanity Crucifix range is increased by 50% per tier (4.5m, 6m, 7.5m respectively).",
     "tells": [
       "Can hunt 60s after being smudged instead of the standard 90s.",
-      "Can hunt 20s after the previous hunt has ended or ghost has used a crucifix instead of the standard 25s."
+      "Can hunt 20s after the previous hunt has ended or ghost has used a crucifix instead of the standard 25s.",
+      "Its ability hunt can still be blocked by Incense, Crucifix and Smudge like a normal hunt, and it can try to use it during the setup phase or a hunt cooldown, in which case the ability simply fails and it goes back to its favourite room."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -153,7 +194,11 @@ const GHOSTS_EN = [
     ],
     "ability": "Cannot change favorite rooms. Less likely to roam and cannot long roam, keeping it within its room more often. Will enter DOTS state more frequently than other ghosts.",
     "tells": [
-      "DOTS only appear on video camera and will not show if a player is in the same room (DOTS state can start outside of room and enter a player's room)."
+      "DOTS only appear on a video camera and will not show if a player is in the same room (the DOTS state can start outside the room and then enter a player's room).",
+      "Only enters the DOTS state when it is in its favourite room and no player is sharing that room.",
+      "Has a 2/3 chance of entering DOTS from the roaming state, against 1/3 for every other ghost, and a 10% chance even while roaming is disabled by The Hermit or a Monkey Paw wish.",
+      "By far the least likely ghost to roam, and it can only ever do short roams, so it cannot change favourite room. The Monkey Paw 'sanity wish' is the only thing that overrides this.",
+      "Has the highest interaction rate of any ghost at 0% sanity."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -192,7 +237,10 @@ const GHOSTS_EN = [
     ],
     "ability": "With the breaker on, can drop a nearby (within 3m or in the same room) player’s sanity by 25%, with EMF 2 or EMF 5 at the breaker. The Jinn cannot directly turn off the breaker.",
     "tells": [
-      "With the breaker on, the Jinn will speed up during a hunt if a player is in <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> and further than 3m away."
+      "With the breaker on, the Jinn will speed up during a hunt if a player is in LOS and further than 3m away.",
+      "Cannot turn off the fuse box directly, but can still overload it by turning on too many lights at once.",
+      "The sanity drain only hits the first player in lobby join order who is in range, and only after a 5 second delay.",
+      "Whether lights are on or off makes no difference to any of its abilities."
     ],
     "speed_badge": "1.7 - 2.5",
     "speed_modal": "1.7 - 2.5 m/s - 2.5m/s when breaker is on, has <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>, and is further than 3m from the seen player, 1.7m/s otherwise <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed-up is not applied when conditions are met for ghost to hunt at the fixed 2.5m/s speed, but is still accumulated in the background. Has normal <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed-up the rest of the time.",
@@ -210,15 +258,18 @@ const GHOSTS_EN = [
     ],
     "ability": "Sprinting in the same room as a Kormos can cause it to hunt up to 70% average sanity. Pseudo-<abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed-up while travelling to the player's last detected location within 5m (detection based on movement). Will <i>not</i> do \"Ghost Mist\" nor \"Chasing\" ghost events.",
     "tells": [
-      "Is completely blind and cannot see the player.",
-      "Has additional detection ranges during hunts based on player movement (normal detection for voice and electronics)."
+      "Is completely blind and cannot see the player. It only reacts to sound: your footsteps, your voice and your electronics.",
+      "Additional detection ranges during hunts based on how you move: 30m if you sprint, 15m if you walk, 10m if you walk while crouched. Always on the same floor, and it stores only one sound per player.",
+      "Has no line of sight by default, but gains it if you move within 5m of it with nothing in between. Without LOS it can still kill by colliding with you, so its kill range is only 0.5m, or 0.6m after a 1 second delay, against 1.1m and 1.5m for other ghosts.",
+      "Can re-target and update its position before reaching the previous one, every 5-10 seconds.",
+      "Never performs \"Ghost Mist\" or \"chasing\" ghost events."
     ],
     "speed_badge": "1.7 - 2.21",
     "speed_modal": "1.7 - 2.21 m/s - 2.21m/s if a player has been detected more than 5m away, 1.7m/s otherwise. Accumulated pseudo-<abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> speed transfers between 1.7m/s (player is not detected or detected within 5m) and 2.21m/s (player is detected outside of 5m).",
     "thresh_badge": "50% - 70%",
     "thresh_modal": "50% - 70% - Can hunt up to 70% sanity when player is sprinting in the same room as it, hunts normally at 50%.",
     "thresh_notes": "Can hunt up to 70% sanity when player is sprinting in the same room as it, hunts normally at 50%.",
-    "counters": ""
+    "counters": "Do not run: move crouched, which cuts its hearing range from 30m to 10m. Standing still is even safer, because it is nearly blind. You do not need a hiding spot, just do not walk around. It cannot hear between floors, so if you are on another level you can move freely. If you must run, break line of sight behind a wall or large prop, because that is the only thing that stops it. Keep your electronics off near the ghost: it locks on to them even while blinded by Incense."
   },
   {
     "name": "Mare",
@@ -230,7 +281,8 @@ const GHOSTS_EN = [
     "ability": "Has a chance to immediately turn off a light switch (or lamp) that a player has turned on within 4m of the ghost. Can use its ability during events, making it the only ghost that can interact with a switch during an event. More likely to long roam when lights are on in its current room. Prefers turning off lights and light bursting events. Cannot turn on lights (including TVs and computers, excluding motion activated lights).",
     "tells": [
       "Won't hunt until 40% average sanity when light switch in its current room is in the on position (regardless of breaker state), 60% average sanity if light switch is in the off position or if the lights are broken (regardless of light switch state).",
-      "Only ghost that cannot flicker the lights with EMF 2 at the switch."
+      "Only ghost that cannot flicker the lights with EMF 2 at the switch.",
+      "Turns lights off and prefers breaking lightbulbs over flickering the switch, and it never turns a light on, including TVs and computers."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -268,8 +320,8 @@ const GHOSTS_EN = [
     ],
     "ability": "During a hunt its footsteps and vocalisations are only audible within 12m instead of the usual 20m, slightly muffled at the limit. Outside hunts it is <i>more</i> talkative: it makes paranormal sounds every 64-127 seconds on a parabolic mic or sound recorder, against 80-127 seconds for other ghosts.",
     "tells": [
-      "Footsteps and vocals cannot be heard more than 12m away during hunts (normal is 20m).",
-      "Makes sounds through the parabolic microphone/sound recorder more frequently than other ghosts."
+      "The gap between its audible range (12m) and the electronic interference range (10m) is tiny: listen for whether it has already gone silent by the time the electronics start failing.",
+      "Two paranormal sounds less than 80 seconds apart on the parabolic mic or sound recorder, and no other ghost produces them that often."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -391,7 +443,10 @@ const GHOSTS_EN = [
     ],
     "ability": "Poltergeist Explosion: will throw multiple objects at the same time, decreasing nearby player sanity by 2% per item thrown. There are 4 types of poltergeist throws. Only ghost that can throw an item while the ghost is in a lit room. Has a higher chance to throw & interact with objects. Can throw objects faster and further.",
     "tells": [
-      "During hunts, Poltergeists will throw an item every 0.5s with an increased force."
+      "During hunts, Poltergeists will throw an item every 0.5s with an increased force.",
+      "Throws with much more force than other ghosts: 2-6m horizontally and 3-6m vertically, against 1-3m and 1-5m.",
+      "When it grabs a prop it only has a 20% chance of throwing it, and if that roll fails it cannot interact at all: no igniting fire sources, no car alarm, no teleporting toys, no moving mannequins.",
+      "The multi-throw ability levitates items for 1-3 seconds, against 0.5-2 seconds for a normal levitation."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -430,7 +485,8 @@ const GHOSTS_EN = [
     ],
     "ability": "Roams at 1.0 m/s, then the instant it detects a player by sight, voice or electronics it jumps to 3.0 m/s and holds that speed until it reaches the last known position, after which it eases back down over about 2.7 seconds. It has no line-of-sight acceleration at all.",
     "tells": [
-      "During a hunt, a Revenant will be slow (1.0m/s) until it detects a player (voice, active electronic equipment, or <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>) where it will immediately speed up to 3.0m/s and remain at that speed until it reaches the players last known location where it will gradually slow back down."
+      "Footsteps are sparse and far apart while it roams, which is the safest way to recognise it from a hiding spot.",
+      "Decelerates from 3.0 m/s back to 1.0 m/s over roughly 2.7 seconds once it loses you, so a hunt that suddenly goes quiet is not a Revenant giving up."
     ],
     "speed_badge": "1.0 - 3.0",
     "speed_modal": "1.0 - 3.0 m/s - 3.0m/s while player is detected, 1.0m/s otherwise.",
@@ -472,7 +528,8 @@ const GHOSTS_EN = [
     ],
     "ability": "Incense near it blocks the next hunt for 180 seconds instead of the usual 90, and the same delay applies when it is smudged during a hunt. It has no other special behaviour, which makes it the baseline to measure every other ghost against.",
     "tells": [
-      "Will wait 180s after being incensed before attempting to hunt again, instead of the standard 90s."
+      "Time an Incense: if it waits the full 180 seconds before hunting again, it is a Spirit. Most other ghosts come back after 90, and the Demon after 60.",
+      "It is the baseline ghost: it has no other special behaviour, so it is easy to misidentify when you have no clear evidence yet."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -494,7 +551,10 @@ const GHOSTS_EN = [
     "ability": "Ghost will attempt to age every 1-2 minutes. If a player is in the same room when it attempts, it ages; otherwise, it waits 30s and attempts again. More active when younger.",
     "tells": [
       "Age response on Ouija board increases as Thaye ages.",
-      "Only ghost that can have an age of 90+ on the Ouija Board."
+      "Only ghost that can have an age of 90+ on the Ouija Board.",
+      "Has a fixed 1/8 chance of starting a hunt each time it leaves an idle state below its threshold, instead of getting more likely as sanity drops.",
+      "Completely stops being able to perform ghost events after ageing 9 times, unless forced by a cursed possession.",
+      "Interacts with doors more often than other ghosts, 30% against the standard 25%."
     ],
     "speed_badge": "1.0 - 2.75",
     "speed_modal": "1.0 - 2.75 m/s - 2.75m/s at its youngest, 1.0m/s at its oldest. <b>Does not speed up in line-of-sight</b>",
@@ -512,7 +572,11 @@ const GHOSTS_EN = [
     ],
     "ability": "Mimics a different ghost every 30 - 120 seconds, taking on all behaviors, tells, and abilities of that ghost (excluding evidence), leading to inconsistent behavior.",
     "tells": [
-      "Will always show Ghost Orbs as an additional evidence, even on 0 evidence."
+      "Will always show Ghost Orbs as an additional evidence, even on 0 evidence.",
+      "Always starts in a blank state at the beginning of a contract, behaving as a normal ghost with no special ability. It first tries to change 1 minute after the first exit door is opened, then every 30 seconds to 2 minutes.",
+      "Never copies the evidence of the ghost it is mimicking, but it does copy evidence-adjacent features such as the Obake's six-fingered handprints or the Deogen's breathing. It cannot copy the Goryo's video-only DOTS, because DOTS is not one of its own evidences.",
+      "Cannot mimic the Banshee or the Dayan if it is currently using a male ghost model, name and vocalisation.",
+      "Some copied behaviours are host-only: the Deogen's flicker rate and breathing, the Hantu's cold breath and the Myling's hunt sounds are only seen or heard by the host."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s - Copies speed of currently mimicked ghost.",
@@ -535,7 +599,9 @@ const GHOSTS_EN = [
     "ability": "Triggering motion sensors, stepping in salt, and spirit box responses only occur at its physical location.",
     "tells": [
       "Can do 2 interactions at the same time, one within its standard radius (2.12m, 4.24m on large maps) and the other within its extended radius (8.48m, 16.97m on large maps).",
-      "Ghost speed during hunts will be either 1.5m/s or 1.9m/s."
+      "Ghost speed during hunts will be either 1.5m/s or 1.9m/s.",
+      "There is only one ghost: no decoy twin sets off motion sensors, steps in salt, produces freezing or spirit box evidence, or hunts at the same time.",
+      "Standard 25 second cooldown between hunts, and it checks for a crucifix at its current location before choosing its speed, teleporting close to its last long-range interaction if it picks the fast one."
     ],
     "speed_badge": "1.5 - 1.9",
     "speed_modal": "1.5 - 1.9 m/s - 1.5m/s when hunting from its standard range, 1.9m/s when hunting from its extended range.",
@@ -556,10 +622,12 @@ const GHOSTS_EN = [
       "spirit_box",
       "dots"
     ],
-    "ability": "Can teleport to a random player, leaving EMF 2 or EMF 5 at the their new location (at foot height). Walks back to their favorite room after teleporting. Can teleport to a random player, leaving EMF 2 at the their new location.",
+    "ability": "Can teleport to a random player, leaving an EMF 2 reading at foot height where it lands, with a 33% chance of it being an EMF 5 instead. It then walks back to its favourite room.",
     "tells": [
       "Will not touch nor interact with salt in any way.",
-      "Will not be slowed down by tier 3 salt during a hunt."
+      "Will not be slowed down by tier 3 salt during a hunt.",
+      "Cannot be identified by its ghost model: it does not float off the ground, does not see through walls, does not walk quietly, and cannot walk through walls even while hunting.",
+      "It does not try to path around salt, it simply ignores salt piles entirely, including Tier III during a hunt."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -598,7 +666,10 @@ const GHOSTS_EN = [
     "ability": "Can shut a door and drop sanity of nearby players by 15% if a door is in the room Incensing the ghost will trap the ghost in its room for the duration of the incense effect (90s). Cannot give DOTS evidence while under the effects of an incense (90s).",
     "tells": [
       "Only ghost that can close or interact with an exit door outside of a hunt/event.",
-      "Must fully open/shut a door when doing door interactions (outside of a hunt)."
+      "Must fully open/shut a door when doing door interactions (outside of a hunt).",
+      "Closes doors with far more force than other ghosts, so it can only ever close them fully or open them fully, never nudge them.",
+      "The sanity drain hits every player within 7.5m of it, but never players outside the investigation area.",
+      "Outside of its ability it interacts with doors no more often than other ghosts, and hiding spot doors never count."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -608,3 +679,5 @@ const GHOSTS_EN = [
     "counters": "If at any point the ghost interacts with a door (outside of a hunt) and the door does not fully open/shut, it is <i>not</i> a Yurei. Place motion sensors (or salt) in the entrances to the room and smudge the ghost. If the ghost leaves the room before 90s, it is <i>not</i> a Yurei Smudge the ghost and watch the ghost room closely, if at any point within the 90s smudge duration the ghost enters a DOTS state, it is <i>not</i> a Yurei."
   }
 ];
+
+

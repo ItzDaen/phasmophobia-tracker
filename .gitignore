@@ -23,3 +23,4 @@ npm-debug.log*
 # Logs and databases
 *.log
 *.sqlite
+__pycache__/

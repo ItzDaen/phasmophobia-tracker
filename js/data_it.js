@@ -1,3 +1,42 @@
+const EVIDENCES_IT = [
+  {
+    "id": "emf5",
+    "name": "EMF Liv. 5",
+    "icon": "fa-solid fa-wave-square"
+  },
+  {
+    "id": "spirit_box",
+    "name": "Spirit Box",
+    "icon": "fa-solid fa-radio"
+  },
+  {
+    "id": "uv",
+    "name": "Ultravioletto",
+    "icon": "fa-solid fa-hand"
+  },
+  {
+    "id": "orb",
+    "name": "Sfera di Luce",
+    "icon": "fa-solid fa-video"
+  },
+  {
+    "id": "writing",
+    "name": "Libro spiritico",
+    "icon": "fa-solid fa-pen-fancy"
+  },
+  {
+    "id": "freezing",
+    "name": "Temp. Congel.",
+    "icon": "fa-solid fa-snowflake"
+  },
+  {
+    "id": "dots",
+    "name": "Proiettore D.O.T.S.",
+    "icon": "fa-solid fa-tower-broadcast"
+  }
+];
+
+
 const GHOSTS_IT = [
   {
     "name": "Aswang",
@@ -32,7 +71,8 @@ const GHOSTS_IT = [
       "33% di probabilità di emettere 1 dei 20 urli unici tramite il microfono parabolico / registratore audio.",
       "Cacce basate sulla sanità mentale del bersaglio anziché sulla sanità mentale media.",
       "Inseguirà il bersaglio solo durante la caccia (se il bersaglio si trova all'interno).",
-      "Il bersaglio perde il 15% di sanità mentale se tocca il fantasma durante un evento fantasma cantante (il drenaggio standard è del 10%)."
+      "Il bersaglio perde il 15% di sanità mentale se tocca il fantasma durante un evento fantasma cantante (il drenaggio standard è del 10%).",
+      "Caccia in base alla sanità del suo bersaglio e non alla media del gruppo, quindi il numero sul diario inganna: controlla direttamente la tessera del bersaglio."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -50,8 +90,8 @@ const GHOSTS_IT = [
     ],
     "ability": "Entro 10 m dal fantasma, velocità e soglia di caccia seguono il giocatore più vicino: 1,2 m/s al 45% se quel giocatore è fermo, 2,25 m/s al 65% se sta camminando. Oltre quel raggio caccia normalmente, e la velocità LOS accumulata in sottofondo viene applicata non appena esce. Può apparire solo come fantasma femminile, con nome e vocalizzo femminili.",
     "tells": [
-      "Può essere solo femmina, il modello fantasma e il nome del fantasma rifletteranno questo.",
-      "La velocità della caccia è determinata dal movimento del giocatore vicino al fantasma."
+      "Può essere solo femminile, e il modello e il nome del fantasma lo riflettono.",
+      "In una partita normale assumi che caccia al 65% e che semplicemente caccia meno spesso prima del 50% di sanità, perché a un certo punto non puoi evitare di passarle vicino."
     ],
     "speed_badge": "1.2 - 2.25",
     "speed_modal": "1.2 - 2.25 (Alt: 1.7) m/s - 2,25 m/s se il giocatore più vicino sta camminando entro 10 m dal fantasma, 1,2 m/s se il giocatore più vicino non si sta muovendo entro 10 m dal fantasma, 1,7 m/s se tutti i giocatori sono più lontani di 10 m dal fantasma. Ha una velocità <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> superiore a 10 m da qualsiasi giocatore. Una volta entro 10 m, l'accelerazione <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> non viene più applicata, ma viene comunque accumulata in background",
@@ -91,7 +131,8 @@ const GHOSTS_IT = [
     "ability": "Può cacciare con qualsiasi livello di sanità mentale. Il range del crocifisso aumenta del 50% per ogni livello (rispettivamente 4,5 m, 6 m, 7,5 m).",
     "tells": [
       "Può cacciare 60 secondi dopo essere stato incensato invece dei 90 secondi standard.",
-      "Può cacciare dopo 20 secondi dalla fine della caccia precedente o dopo che il fantasma ha usato un crocifisso, invece dei 25 secondi standard."
+      "Può cacciare dopo 20 secondi dalla fine della caccia precedente o dopo che il fantasma ha usato un crocifisso, invece dei 25 secondi standard.",
+      "La caccia tramite abilità può comunque essere bloccata da Incenso, Crocifisso e Smudge come una caccia normale, e può provare a usarla durante la fase di setup o il tempo di attesa tra cacce: in quel caso l'abilità fallisce e torna alla sua stanza preferita."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -153,7 +194,11 @@ const GHOSTS_IT = [
     ],
     "ability": "Non può cambiare la sua stanza preferita. Raramente si allontana dalla sua stanza e non può fare lunghe esplorazioni. Entra in stato DOTS molto più frequentemente degli altri fantasmi.",
     "tells": [
-      "I DOTS appaiono solo sulla videocamera e non vengono visualizzati se un giocatore si trova nella stessa stanza (lo stato dei DOTS può iniziare fuori dalla stanza ed entrare nella stanza di un giocatore)."
+      "Il D.O.T.S. compare solo sulla video camera e non si vede se un giocatore è nella stessa stanza (lo stato D.O.T.S. può iniziare fuori dalla stanza e poi entrarci).",
+      "Entra nello stato D.O.T.S. solo se è nella sua stanza preferita e nessun giocatore la condivide.",
+      "Ha una probabilità di 2/3 di entrare nel D.O.T.S. dallo stato vagante, contro 1/3 per tutti gli altri fantasmi, e una probabilità del 10% anche quando la vaganza è disabilitata da L'Eremita o da un desiderio della Zampa di Scimmia.",
+      "È di gran lunga il fantasma meno incline a vagare e può fare solo vaganze brevi, quindi non può cambiare stanza preferita. L'unica cosa che può sovrascrivere questo è il desiderio di sanità della Zampa di Scimmia.",
+      "Ha la frequenza di interazione più alta di tutti i fantasmi alla sanità 0%."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -192,7 +237,10 @@ const GHOSTS_IT = [
     ],
     "ability": "Con il contatore acceso, può ridurre la sanità mentale di un giocatore nelle vicinanze (entro 3 m o nella stessa stanza) del 25%, con EMF 2 o EMF 5 sul contatore. Il Jinn non può spegnere direttamente il contatore.",
     "tells": [
-      "Con il contatore acceso, il Jinn aumenterà la velocità durante una caccia se un giocatore è nella sua <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> e si trova a più di 3 metri di distanza."
+      "Con il quadro elettrico acceso, il Jinn accelera durante la caccia se un giocatore è in LOS e a più di 3 m di distanza.",
+      "Non può spegnere direttamente il quadro elettrico, ma può comunque farlo saltare accendendo troppe luci insieme.",
+      "Il calo di sanità colpisce solo il primo giocatore nell'ordine di ingresso in lobby che si trova nel raggio, e solo dopo un ritardo di 5 secondi.",
+      "Che le luci siano accese o spente non influisce su nessuna delle sue abilità."
     ],
     "speed_badge": "1.7 - 2.5",
     "speed_modal": "1.7 - 2.5 m/s - 2,5 m/s quando il contatore è acceso, ha <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr>, e il giocatore visto è a più di 3 m di distanza; altrimenti 1,7 m/s. L'accelerazione <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> non viene applicata quando sono soddisfatte le condizioni affinché i fantasmi possano cacciare alla velocità fissa di 2,5 m/s, ma viene comunque accumulata sullo sfondo. Ha una normale accelerazione <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> per il resto del tempo.",
@@ -210,15 +258,18 @@ const GHOSTS_IT = [
     ],
     "ability": "Correre nella stessa stanza del Kormos potrà causare una caccia fino al 70% di sanità mentale. media Aumento di velocità pseudo-<abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> mentre si dirige verso l'ultima posizione conosciuta del giocatore entro un raggio di 5m (rilevamento in base al tipo di movimento). Non <i>farà</i> eventi paranormali di \"Forma di nebbia\" né \"inseguimento\".",
     "tells": [
-      "È completamente cieco e non può vedere il giocatore.",
-      "Ha raggi di rilevamento aggiuntivi durante le cacce in base al tipo di movimento del giocatore (rilevamento normale per voci ed elettronica)."
+      "È completamente cieco e non può vederti. Reagisce solo ai suoni: i tuoi passi, la tua voce e i tuoi elettronici.",
+      "Raggi di rilevamento aggiuntivi durante le cacce in base a come ti muovi: 30 m se corri, 15 m se cammini, 10 m se cammini chinato. Sempre sullo stesso piano, e per ogni giocatore memorizza un solo suono.",
+      "Non ha LOS di default, ma la ottiene se ti muovi entro 5 m senza nulla di mezzo. Senza LOS può comunque ucciderti per collisione, quindi il suo raggio d'uccisione è di soli 0,5 m, o 0,6 m dopo un secondo di ritardo, contro 1,1 m e 1,5 m per gli altri fantasmi.",
+      "Riposiziona il proprio bersaglio prima di raggiungere il precedente, ogni 5-10 secondi.",
+      "Non esegue mai eventi \"Forma di nebbia\" né \"inseguimento\"."
     ],
     "speed_badge": "1.7 - 2.21",
     "speed_modal": "1.7 - 2.21 m/s - 2.21m/s se il giocatore è stato rilevato al di fuori di 5m, 1.7m/s nei casi opposti. Velocità pseudo-<abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr> accumulata varia tra 1.7m/s (se il giocatore non viene rilevato o rilevato nel raggio di 5m) e 2.21m/s (se il giocatore è rilevato al di fuori di 5m).",
     "thresh_badge": "50% - 70%",
     "thresh_modal": "50% - 70% - Può cacciare da 70% di sanità quando il giocatore corre nella stessa sua stanza, caccia normalmente a 50%.",
     "thresh_notes": "Può cacciare da 70% di sanità quando il giocatore corre nella stessa sua stanza, caccia normalmente a 50%.",
-    "counters": ""
+    "counters": "Non correre: muoviti chinato, così il suo raggio di udito scende da 30 m a 10 m. Restare fermi è ancora più sicuro, perché è quasi cieco. Non ti serve un nascondiglio, basta non camminare. Non riesce a sentire tra un piano e l'altro, quindi se sei su un altro livello puoi muoverti liberamente. Se devi per forza correre, interrompi la linea di vista dietro un muro o un oggetto grande, perché è l'unica cosa che lo ferma. Tieni spenti gli elettronici vicino al fantasma: li aggancia anche mentre è accecato dall'incenso."
   },
   {
     "name": "Mare",
@@ -230,7 +281,8 @@ const GHOSTS_IT = [
     "ability": "Ha una possibilità di spegnere immediatamente un interruttore (o una lampada) che il giocatore ha acceso entro 4 metri dal fantasma. Può usare la sua abilità durante gli eventi, rendendolo l'unico fantasma in grado di interagire con un interruttore durante un evento. Preferirà vagare di più se le luci sono accese nella sua stanza attuale. Preferisce spegnere le luci e provocare eventi di rottura delle lampadine. Non può accendere le luci (incluse TV e computer, escluse le luci a sensore di movimento)",
     "tells": [
       "Non caccia fino al 40% di sanità media quando l’interruttore della luce nella sua stanza attuale è acceso, 60% di sanità media se l’interruttore della luce è spento o se le luci sono rotte.",
-      "L'unico fantasma che non può far lampeggiare le luci con EMF 2 all'interruttore della luce."
+      "L'unico fantasma che non può far lampeggiare le luci con EMF 2 all'interruttore della luce.",
+      "Spegne le luci e preferisce far esplodere le lampadine piuttosto che far tremolare l'interruttore, e non accende mai una luce, TV e computer compresi."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -268,8 +320,8 @@ const GHOSTS_IT = [
     ],
     "ability": "Durante la caccia i suoi passi e le sue vocalizzazioni si sentono solo entro 12 m invece dei soliti 20 m, leggermente ovattati al limite. Fuori dalle cacce è invece <i>più</i> loquace: produce suoni paranormali ogni 64-127 secondi con microfono parabolico o registratore audio, contro ogni 80-127 secondi per gli altri fantasmi.",
     "tells": [
-      "Durante la caccia, i passi e le voci non possono essere uditi a più di 12 metri di distanza (normale è 20 metri).",
-      "Emette suoni attraverso il microfono parabolico / registratore audio più frequentemente rispetto agli altri fantasmi."
+      "La distanza fra il suo raggio udibile (12 m) e quello di interferenza elettronica (10 m) è minima: ascolta se è già muto quando iniziano a fallire gli elettronici.",
+      "Due suoni paranormali a meno di 80 secondi di distanza con il microfono parabolico o il registratore audio, e nessun altro fantasma li produce così spesso."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -391,7 +443,10 @@ const GHOSTS_IT = [
     ],
     "ability": "Esplosione Poltergeist: lancerà più oggetti contemporaneamente, riducendo la sanità mentale dei giocatori vicini del 2% per ogni oggetto lanciato. Esistono 4 tipi di lanci Poltergeist. L'unico fantasma in grado di lanciare un oggetto mentre si trova in una stanza illuminata. Ha una maggiore probabilità di lanciare e interagire con gli oggetti. Può lanciare oggetti più velocemente e più lontano.",
     "tells": [
-      "Durante le cacce, i Poltergeist lanceranno un oggetto ogni 0,5 secondi con una forza maggiore."
+      "Durante le cacce, i Poltergeist lanciano un oggetto ogni 0,5 s con una forza aumentata.",
+      "Lancia con una forza molto maggiore rispetto agli altri fantasmi: 2-6 m in orizzontale e 3-6 m in verticale, contro 1-3 m e 1-5 m.",
+      "Quando afferra un oggetto ha solo il 20% di probabilità di lanciarlo, e se il tiro fallisce non può interagire per niente: non accende fonti di fuoco, non attiva l'allarme, non teletrasporta giocattoli, non muove manichini.",
+      "L'abilità del lancio multiplo solleva gli oggetti per 1-3 secondi, contro 0,5-2 secondi di un sollevamento normale."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -430,7 +485,8 @@ const GHOSTS_IT = [
     ],
     "ability": "Vaga a 1,0 m/s, poi nel momento in cui rileva un giocatore con vista, voce o elettronici salta a 3,0 m/s e mantiene quella velocità fino a raggiungere l'ultima posizione conosciuta, dopodiché rallenta gradualmente in circa 2,7 secondi. Non ha alcuna accelerazione per LOS.",
     "tells": [
-      "Durante una caccia, un Revenant sarà lento (1,0 m/s) finché non rileva un giocatore. Se rilevato, accelererà immediatamente a 3,0 m/s e manterrà quella velocità fino a raggiungere l’ultima posizione nota del giocatore, dove rallenterà gradualmente."
+      "I passi sono radi e distanziati mentre vaga, ed è il modo più sicuro di riconoscerlo da un nascondiglio.",
+      "Rallenta da 3,0 m/s fino a 1,0 m/s in circa 2,7 secondi una volta che ti perde, quindi una caccia che diventa improvvisamente silenziosa non è un Revenant che si arrende."
     ],
     "speed_badge": "1.0 - 3.0",
     "speed_modal": "1.0 - 3.0 m/s - 3,0 m/s quando rileva un giocatore, altrimenti 1,0 m/s.",
@@ -472,7 +528,8 @@ const GHOSTS_IT = [
     ],
     "ability": "L'incenso vicino a lui blocca la caccia successiva per 180 secondi invece dei soliti 90, e lo stesso ritardo vale quando viene incensato durante una caccia. Non ha altri comportamenti particolari, il che lo rende il riferimento base con cui confrontare tutti gli altri fantasmi.",
     "tells": [
-      "Dopo essere stato incensato, attenderà 180 secondi prima di tentare nuovamente la caccia, invece dei 90 secondi standard."
+      "Cronometra un incenso: se aspetta tutti i 180 secondi prima di cacciare di nuovo, è uno Spirito. La maggior parte degli altri fantasmi torna dopo 90 secondi, e il Demone dopo 60.",
+      "È il fantasma di riferimento: non ha altri comportamenti particolari, quindi è facile sbagliare identificazione quando non hai ancora evidenze certe."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -494,7 +551,10 @@ const GHOSTS_IT = [
     "ability": "Il fantasma maturerà ogni 1-2 minuti. Se un giocatore si trova nella stessa stanza quando tenta, matura; altrimenti, aspetta 30 secondi e riprova. Più attivo quando è giovane.",
     "tells": [
       "La risposta dell'età sulla tavola Ouija aumenta con l'avanzare dell'età di Thaye.",
-      "L'unico fantasma che può avere più di 90 anni sulla tavola Ouija."
+      "L'unico fantasma che può avere più di 90 anni sulla tavola Ouija.",
+      "Ha una probabilità fissa di 1/8 di iniziare una caccia ogni volta che esce da uno stato inattivo sotto la sua soglia, invece di diventare più probabile man mano che la sanità scende.",
+      "Smette del tutto di poter fare eventi fantasma dopo 9 invecchiamenti, a meno che non sia forzato da una possessione maledetta.",
+      "Interagisce con le porte più spesso degli altri fantasmi, 30% contro il 25% standard."
     ],
     "speed_badge": "1.0 - 2.75",
     "speed_modal": "1.0 - 2.75 m/s - 2,75 m/s se è giovane, 1,0 m/s se è più vecchio <b>Non accelera nella <abbr class=\"los-term\" title=\"Line of Sight (Campo Visivo)\">LOS</abbr></b>",
@@ -512,7 +572,11 @@ const GHOSTS_IT = [
     ],
     "ability": "Imita un fantasma diverso ogni 30-120 secondi, assume tutti i comportamenti, i segni distintivi e le abilità di quel fantasma (escluse le prove), portando a comportamenti incoerenti.",
     "tells": [
-      "Mostrerà sempre le sfere fantasma come prova aggiuntiva, anche con 0 prove."
+      "Mostrerà sempre la Sfera di Luce come prova aggiuntiva, anche con 0 evidenze.",
+      "All'inizio di un contratto parte sempre da uno stato 'vuoto' e si comporta come un fantasma normale senza abilità speciali. Prova a cambiare per la prima volta 1 minuto dopo l'apertura della prima porta d'uscita, poi ogni 30 secondi ogni 2 minuti.",
+      "Non copia mai le evidenze del fantasma che imita, ma copia sì dettagli legati alle evidenze come le impronte a sei dita dell'Obake o il respiro del Deogen. Non può copiare il D.O.T.S. su video del Goryo, perché il D.O.T.S. non è una delle sue evidenze.",
+      "Non può imitare il Banshee o il Dayan se sta usando modello, nome e vocalizzo maschili.",
+      "Alcuni comportamenti copiati sono visibili solo all'host: la frequenza di sfarfallio e il respiro del Deogen, l'alito gelido dell'Hantu e i suoni di caccia del Myling si vedono e si sentono solo dall'host."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s - Copia la velocità del fantasma attualmente imitato.",
@@ -535,7 +599,9 @@ const GHOSTS_IT = [
     "ability": "L'attivazione dei sensori di movimento, camminare sul sale e le risposte della spirit box avvengono solo nella sua posizione fisica.",
     "tells": [
       "Può effettuare 2 interazioni contemporaneamente, una all'interno del suo raggio standard (2,12 m, 4,24 m su mappe grandi) e l'altra all'interno del suo raggio esteso (8,48 m, 16,97 m su mappe grandi).",
-      "La velocità fantasma durante le cacce sarà di 1,5 m/s o 1,9 m/s."
+      "La velocità fantasma durante le cacce sarà di 1,5 m/s o 1,9 m/s.",
+      "C'è un solo fantasma: nessun gemello esca fa scattare i sensori di movimento, calpesta il sale, produce evidenze di congelamento o spirit box, o caccia nello stesso momento.",
+      "Tempo di attesa standard di 25 secondi fra le cacce, e controlla la presenza di un crocifisso nella sua posizione attuale prima di scegliere la velocità, teletrasportandosi vicino all'ultima interazione a lungo raggio se sceglie quella veloce."
     ],
     "speed_badge": "1.5 - 1.9",
     "speed_modal": "1.5 - 1.9 m/s - 1,5 m/s quando caccia dalla distanza standard, 1,9 m/s quando caccia dalla distanza estesa.",
@@ -556,10 +622,12 @@ const GHOSTS_IT = [
       "spirit_box",
       "dots"
     ],
-    "ability": "Può teletrasportarsi su un giocatore casuale, lasciando EMF 2 o EMF 5 nella loro nuova posizione (all'altezza dei piedi). Dopo essersi teletrasportati, tornano nella loro stanza preferita. Può teletrasportarsi su un giocatore casuale, lasciando EMF 2 nella sua nuova posizione.",
+    "ability": "Può teletrasportarsi a un giocatore casuale, lasciando una lettura EMF 2 all'altezza dei piedi nel punto in cui atterra, con il 33% di probabilità che sia invece un EMF 5. Poi torna camminando alla sua stanza preferita.",
     "tells": [
       "Non toccherà né interagirà in alcun modo con il sale.",
-      "Non verrà rallentato dal sale di livello 3 durante una caccia."
+      "Non verrà rallentato dal sale di livello 3 durante una caccia.",
+      "Non puoi identificarlo dal modello del fantasma: non si solleva da terra, non vede attraverso i muri, non cammina in silenzio e non attraversa i muri nemmeno durante la caccia.",
+      "Non cerca di aggirare il sale, semplicemente lo ignora del tutto, Tier III compreso durante una caccia."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -598,7 +666,10 @@ const GHOSTS_IT = [
     "ability": "Può chiudere una porta e ridurre la sanità mentale dei giocatori vicini del 15% se nella stanza è presente una porta Incensare il fantasma lo costringerà a rimanere nella “stanza preferita” per tutta la durata dell'effetto dell'incenso (90 secondi). Non è possibile fornire prove DOTS mentre si è sotto l'effetto di un incenso (90 secondi) .",
     "tells": [
       "L'unico fantasma in grado di chiudere o interagire con una porta di uscita al di fuori di una caccia/evento.",
-      "Deve aprire/chiudere completamente una porta quando si interagisce con essa (al di fuori di una caccia)."
+      "Deve aprire/chiudere completamente una porta quando si interagisce con essa (al di fuori di una caccia).",
+      "Chiude le porte con una forza molto maggiore degli altri fantasmi, quindi può solo chiuderle del tutto o aprirle del tutto, mai muoverle appena.",
+      "Il calo di sanità colpisce tutti i giocatori entro 7,5 m da lui, ma mai chi si trova fuori dalla zona d'indagine.",
+      "Al di fuori della sua abilità non interagisce con le porte più spesso degli altri fantasmi, e le porte dei nascondigli non contano mai."
     ],
     "speed_badge": "1.7",
     "speed_modal": "1.7 m/s.",
@@ -608,3 +679,5 @@ const GHOSTS_IT = [
     "counters": "Se in qualsiasi momento il fantasma interagisce con una porta (al di fuori di una caccia) e la porta non si apre/chiude completamente, <i>non</i> è uno Yurei. Posiziona dei sensori di movimento (o del sale) agli ingressi della stanza e incensa il fantasma. Se il fantasma lascia la stanza prima dei 90 secondi, <i>non</i> è uno Yurei Incensa il fantasma e osserva attentamente la stanza fantasma: se in qualsiasi momento durante i 90 secondi di durata dell'incenso il fantasma entra in uno stato DOTS, <i>non</i> si tratta di uno Yurei ."
   }
 ];
+
+
